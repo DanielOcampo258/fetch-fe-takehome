@@ -1,2 +1,11 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import type { Dog } from '$lib/api/dogs/models';
+	import { getDogs } from '$lib/api/dogs/utils.svelte';
+	import { onMount } from 'svelte';
+
+	let dogs = $state<Dog[]>([]);
+
+	onMount(async () => {
+		dogs = await getDogs();
+	});
+</script>
