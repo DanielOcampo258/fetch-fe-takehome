@@ -7,6 +7,12 @@ export const LoginSchema = z.object({
 
 export type LoginData = z.infer<typeof LoginSchema>;
 
-export interface LoginError {
+export interface LoginState {
+	isSubmitting: boolean;
+	error: LoginError;
+}
+
+interface LoginError {
 	validation?: ZodFormattedError<LoginData>;
+	apiResponse?: string;
 }
