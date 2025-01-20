@@ -2,6 +2,17 @@ import { API_BASE_URL } from '../constants';
 import { DogApiRoutes } from './constants';
 import type { Dog, DogSeachApiResponse } from './models';
 
+export async function getAllDogBreeds(): Promise<string[]> {
+	try {
+		const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.getAllBreeds}`, {
+			credentials: 'include'
+		});
+		return await res.json();
+	} catch {
+		return [];
+	}
+}
+
 export async function getDogs(): Promise<Dog[]> {
 	try {
 		const dogIds = await getDogIds();
