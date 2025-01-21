@@ -1,16 +1,11 @@
 <script lang="ts">
 	import type { Dog } from '$lib/api/dogs/models';
 	import DogCard from '$lib/components/homePage/DogCard.svelte';
-	import BreedSearchComboBox from '$lib/components/homePage/filtering/BreedSearchComboBox.svelte';
-	import { DogBreedState } from '$lib/components/homePage/filtering/state/dogBreedState.svelte';
-	import { onMount } from 'svelte';
+	import FilteringComponent from '$lib/components/homePage/filtering/FilteringComponent.svelte';
+	import { FilterState } from '$lib/components/homePage/filtering/state/FilterQueryState.svelte';
 
-	const dogBreedsState = new DogBreedState();
+	const filterState = new FilterState();
 	let dogs = $state<Dog[]>([]);
-
-	onMount(() => {
-		dogBreedsState.fetchAllDogBreeds();
-	});
 </script>
 
 <header>
@@ -20,10 +15,7 @@
 </header>
 
 <main class="flex items-start gap-5 p-12">
-	<aside class="flex w-full flex-col items-center lg:max-w-64">
-		<BreedSearchComboBox {dogBreedsState} />
-	</aside>
-
+	<FilteringComponent {filterState} />
 	<section class="grid grid-cols-1 gap-5 md:grid-cols-3">
 		{#each dogs as dogData}
 			<DogCard {dogData} />

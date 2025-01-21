@@ -5,9 +5,10 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Label } from '$lib/components/ui/label';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import type { DogBreedState } from './state/dogBreedState.svelte';
+	import type { FilterState } from './state/FilterQueryState.svelte';
 
-	let { dogBreedsState }: { dogBreedsState: DogBreedState } = $props();
+	let { allDogBreeds, filterState }: { allDogBreeds: string[]; filterState: FilterState } =
+		$props();
 	let open = $state(false);
 	let searchRef = $state<HTMLInputElement>(null!);
 
@@ -26,8 +27,8 @@
 		<Popover.Trigger>
 			{#snippet child({ props })}
 				<Button variant="outline" class="w-full" {...props} role="combobox" aria-expanded={open}>
-					{dogBreedsState.selectedBreeds.length > 0
-						? `Selected breed(s): ${dogBreedsState.selectedBreeds.length}`
+					{filterState.selectedBreeds.length > 0
+						? `Selected breed(s): ${filterState.selectedBreeds.length}`
 						: 'Any'}
 				</Button>
 			{/snippet}
@@ -39,18 +40,20 @@
 				<Command.List>
 					<Command.Empty>No Dog Breeds Found</Command.Empty>
 					<Command.Group>
-						{#each dogBreedsState.dogBreeds as dogBreed}
+						{#each allDogBreeds as dogBreed}
 							<Command.Item class="flex justify-between">
 								<Label for={`${dogBreed}-checkbox`}>{dogBreed}</Label>
 								<Checkbox
-									checked={dogBreedsState.selectedBreeds.includes(dogBreed)}
+									checked={filterState.selectedBreeds.includes(dogBreed)}
 									id={`${dogBreed}-checkbox`}
 									onCheckedChange={(checked) => {
 										if (checked) {
-											dogBreedsState.addDogSelectedBreed(dogBreed);
+											filterState.addSelectedBreed(dogBreed);
 										} else {
-											dogBreedsState.removeSelectedBreed(dogBreed);
+											filterState.removeSelectedBreed(dogBreed);
 										}
+
+										refocusOnSearchBar();
 									}}
 								/>
 							</Command.Item>
