@@ -10,7 +10,7 @@
 	>
 		Sort
 	</p>
-	<div class="flex w-full gap-5">
+	<div class="flex w-full justify-evenly gap-5">
 		<Select.Root type="single" bind:value={category}>
 			<Select.Trigger class="w-[180px]">{category}</Select.Trigger>
 			<Select.Content>

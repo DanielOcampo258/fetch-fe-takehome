@@ -16,7 +16,7 @@
 	let { filterState = $bindable() }: { filterState: FilterState } = $props();
 </script>
 
-<aside class="flex w-full flex-col items-center gap-5 lg:max-w-64">
+<section class="flex w-full flex-col items-center gap-5 lg:max-w-64">
 	<BreedSearchComboBox allDogBreeds={dogBreeds.data} {filterState} />
 
 	<section class="w-full text-center">
@@ -46,4 +46,4 @@
 		bind:category={filterState.sortCategory}
 		bind:direction={filterState.sortDirection}
 	/>
-</aside>
+</section>

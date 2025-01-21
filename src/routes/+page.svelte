@@ -5,8 +5,12 @@
 	import DogPagination from '$lib/components/homePage/filtering/DogPagination.svelte';
 	import FilteringComponent from '$lib/components/homePage/filtering/FilteringComponent.svelte';
 	import { FilterState } from '$lib/components/homePage/filtering/state/FilterQueryState.svelte';
+	import { FavoritesState } from '$lib/components/homePage/state/DogMatching.svelte';
+	import { Button } from '$lib/components/ui/button';
 
 	const filterState = new FilterState();
+	const favoritesList = new FavoritesState();
+
 	let dogs = $state<Dog[]>([]);
 	let dogsSearchResponse = $state<DogSeachApiResponse>();
 
@@ -35,11 +39,15 @@
 	</h1>
 </header>
 
-<main class="flex items-start gap-5 p-12">
-	<FilteringComponent {filterState} />
+<main class="flex flex-col items-center gap-5 p-12 md:flex-row md:items-start">
+	<aside class="top-10 flex flex-col gap-5 md:sticky">
+		<FilteringComponent {filterState} />
+		<Button class="w-full" disabled={favoritesList.size === 0}>Find a match from favorites</Button>
+	</aside>
+
 	<section class="grid grid-cols-1 gap-5 md:grid-cols-3">
-		{#each dogs as dogData}
-			<DogCard {dogData} />
+		{#each dogs as dogData (dogData.id)}
+			<DogCard {dogData} {favoritesList} />
 		{/each}
 	</section>
 </main>
