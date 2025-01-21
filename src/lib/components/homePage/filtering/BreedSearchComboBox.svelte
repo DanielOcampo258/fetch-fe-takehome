@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import * as Command from '$lib/components/ui/command/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -11,6 +11,12 @@
 		$props();
 	let open = $state(false);
 	let searchRef = $state<HTMLInputElement>(null!);
+	let comboboxButton = $state<HTMLInputElement>(null!);
+
+	onMount(() => {
+		// Work around for accessibility as regular shadcn-ui buttons are given pre-existing ids
+		comboboxButton.id = 'combobox-trigger';
+	});
 
 	// TODO: ADD TESTS
 	function refocusOnSearchBar() {
@@ -21,14 +27,21 @@
 </script>
 
 <article class="w-full text-center">
-	<p>Breeds</p>
+	<Label for="combobox-trigger">Breeds</Label>
 
 	<Popover.Root bind:open>
 		<Popover.Trigger>
 			{#snippet child({ props })}
-				<Button variant="outline" class="w-full" {...props} role="combobox" aria-expanded={open}>
-					{filterState.selectedBreeds.length > 0
-						? `Selected breed(s): ${filterState.selectedBreeds.length}`
+				<Button
+					bind:ref={comboboxButton}
+					variant="outline"
+					class="w-full"
+					{...props}
+					role="combobox"
+					aria-expanded={open}
+				>
+					{filterState.breeds.length > 0
+						? `Selected breed(s): ${filterState.breeds.length}`
 						: 'Any'}
 				</Button>
 			{/snippet}
@@ -44,7 +57,7 @@
 							<Command.Item class="flex justify-between">
 								<Label for={`${dogBreed}-checkbox`}>{dogBreed}</Label>
 								<Checkbox
-									checked={filterState.selectedBreeds.includes(dogBreed)}
+									checked={filterState.breeds.includes(dogBreed)}
 									id={`${dogBreed}-checkbox`}
 									onCheckedChange={(checked) => {
 										if (checked) {
