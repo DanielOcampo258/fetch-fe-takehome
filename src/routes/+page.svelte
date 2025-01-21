@@ -1,17 +1,31 @@
 <script lang="ts">
-	import type { Dog } from '$lib/api/dogs/models';
-	import { getDogs } from '$lib/api/dogs/utils.svelte';
+	import type { Dog, DogSeachApiResponse } from '$lib/api/dogs/models';
+	import { getDogIds, getDogMatches } from '$lib/api/dogs/utils.svelte';
 	import DogCard from '$lib/components/homePage/DogCard.svelte';
+	import DogPagination from '$lib/components/homePage/filtering/DogPagination.svelte';
 	import FilteringComponent from '$lib/components/homePage/filtering/FilteringComponent.svelte';
 	import { FilterState } from '$lib/components/homePage/filtering/state/FilterQueryState.svelte';
 
 	const filterState = new FilterState();
 	let dogs = $state<Dog[]>([]);
+	let dogsSearchResponse = $state<DogSeachApiResponse>();
+
+	let pageCount = $derived.by(() => {
+		if (!dogsSearchResponse?.total) return 1;
+		return Math.ceil(dogsSearchResponse.total / filterState.size);
+	});
+
+	async function getDogs(queryString: string) {
+		try {
+			dogsSearchResponse = await getDogIds(queryString);
+			dogs = await getDogMatches(dogsSearchResponse);
+		} catch {
+			// TODO: Implement error state
+		}
+	}
 
 	$effect(() => {
-		getDogs(filterState.queryString).then((data) => {
-			dogs = data;
-		});
+		getDogs(filterState.queryString);
 	});
 </script>
 
@@ -29,3 +43,7 @@
 		{/each}
 	</section>
 </main>
+
+<footer class="pb-5">
+	<DogPagination {pageCount} bind:currentPage={filterState.currentPage} />
+</footer>

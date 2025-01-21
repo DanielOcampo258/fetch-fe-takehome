@@ -6,7 +6,7 @@ const INITIAL_EMPTY_FILTER: DogSeachQuery = {
 	ageMax: null,
 	zipCodes: null,
 	size: 25,
-	from: 1,
+	from: 0,
 	sort: null
 };
 
@@ -15,9 +15,10 @@ export class FilterState implements DogSeachQuery {
 	ageMin = $state(INITIAL_EMPTY_FILTER.ageMin);
 	ageMax = $state(INITIAL_EMPTY_FILTER.ageMax);
 	zipCodes = $state(INITIAL_EMPTY_FILTER.zipCodes);
+	currentPage = $state(1);
 
 	readonly size = INITIAL_EMPTY_FILTER.size;
-	from = INITIAL_EMPTY_FILTER.from;
+	from = $derived((this.currentPage - 1) * this.size);
 	sort = INITIAL_EMPTY_FILTER.sort;
 
 	addSelectedBreed = (newBreed: string) => {

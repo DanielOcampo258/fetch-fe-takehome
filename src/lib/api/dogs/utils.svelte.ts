@@ -13,24 +13,14 @@ export async function getAllDogBreeds(): Promise<string[]> {
 	}
 }
 
-export async function getDogs(queryString: string): Promise<Dog[]> {
-	try {
-		const dogIds = await getDogIds(queryString);
-		const dogData = await getDogMatches(dogIds);
-		return dogData;
-	} catch {
-		return [];
-	}
-}
-
-async function getDogIds(queryString: string): Promise<DogSeachApiResponse> {
+export async function getDogIds(queryString: string): Promise<DogSeachApiResponse> {
 	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.getSearch}?${queryString}`, {
 		credentials: 'include'
 	});
 	return res.json();
 }
 
-async function getDogMatches(dogIds: DogSeachApiResponse): Promise<Dog[]> {
+export async function getDogMatches(dogIds: DogSeachApiResponse): Promise<Dog[]> {
 	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.postDogMatches}`, {
 		headers: {
 			'Content-Type': 'application/json'

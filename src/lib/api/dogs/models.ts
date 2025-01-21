@@ -3,8 +3,8 @@ export interface DogSeachQuery {
 	zipCodes: number[] | null;
 	ageMin: number | null;
 	ageMax: number | null;
-	size: number | null;
-	from: number | null;
+	size: number;
+	from: number;
 	sort: string | null;
 }
 
