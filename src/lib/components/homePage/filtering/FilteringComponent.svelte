@@ -5,6 +5,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import type { FilterState } from './state/FilterQueryState.svelte';
+	import SortingComponent from './SortingComponent.svelte';
 
 	const dogBreeds = new DogBreedsHandler();
 
@@ -40,4 +41,9 @@
 		<Label for="zip-codes">Zip Codes</Label>
 		<Input id="zip-codes" bind:value={filterState.zipCodes} placeholder="53713, 53188" />
 	</section>
+
+	<SortingComponent
+		bind:category={filterState.sortCategory}
+		bind:direction={filterState.sortDirection}
+	/>
 </aside>
