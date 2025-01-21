@@ -39,7 +39,7 @@
 
 	<section class="flex w-full flex-col items-center gap-2">
 		<Label for="zip-codes">Zip Codes</Label>
-		<Input id="zip-codes" bind:value={filterState.zipCodes} placeholder="53713, 53188" />
+		<Input id="zip-codes" bind:value={filterState.zipCodeInput} placeholder="53713, 53188" />
 	</section>
 
 	<SortingComponent

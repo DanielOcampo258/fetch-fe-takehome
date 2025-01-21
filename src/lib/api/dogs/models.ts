@@ -1,6 +1,6 @@
 export interface DogSeachQuery {
 	breeds: string[];
-	zipCodes: number[] | null;
+	zipCodes: string[];
 	ageMin: number | null;
 	ageMax: number | null;
 	size: number;

@@ -10,7 +10,7 @@ const INITIAL_EMPTY_FILTER: DogSeachQuery = {
 	breeds: [],
 	ageMin: null,
 	ageMax: null,
-	zipCodes: null,
+	zipCodes: [''],
 	size: 25,
 	from: 0,
 	sort: `${INITIAL_SORT_CATEGORY.toLowerCase()}:${INITIAL_SORT_DIRECTION.toLowerCase()}`
@@ -22,7 +22,9 @@ export class FilterState implements DogSeachQuery {
 	breeds = $state(INITIAL_EMPTY_FILTER.breeds);
 	ageMin = $state(INITIAL_EMPTY_FILTER.ageMin);
 	ageMax = $state(INITIAL_EMPTY_FILTER.ageMax);
-	zipCodes = $state(INITIAL_EMPTY_FILTER.zipCodes);
+
+	zipCodeInput = $state<string>(INITIAL_EMPTY_FILTER.zipCodes[0]);
+	zipCodes = $derived(this.zipCodeInput.split(', '));
 
 	currentPage = $state(1);
 	from = $derived((this.currentPage - 1) * this.size);
@@ -51,7 +53,8 @@ export class FilterState implements DogSeachQuery {
 			// Check if it is array to handle "breeds" case
 			if (Array.isArray(value)) {
 				value.forEach((arrayValue) => {
-					searchParams.append(key, arrayValue);
+					// Only append valid values
+					if (arrayValue) searchParams.append(key, arrayValue);
 				});
 			} else {
 				searchParams.append(key, value);
