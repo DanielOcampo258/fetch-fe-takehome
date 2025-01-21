@@ -1,11 +1,18 @@
 <script lang="ts">
 	import type { Dog } from '$lib/api/dogs/models';
+	import { getDogs } from '$lib/api/dogs/utils.svelte';
 	import DogCard from '$lib/components/homePage/DogCard.svelte';
 	import FilteringComponent from '$lib/components/homePage/filtering/FilteringComponent.svelte';
 	import { FilterState } from '$lib/components/homePage/filtering/state/FilterQueryState.svelte';
 
 	const filterState = new FilterState();
 	let dogs = $state<Dog[]>([]);
+
+	$effect(() => {
+		getDogs(filterState.queryString).then((data) => {
+			dogs = data;
+		});
+	});
 </script>
 
 <header>
