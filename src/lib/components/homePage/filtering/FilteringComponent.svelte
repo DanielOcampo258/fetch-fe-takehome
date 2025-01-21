@@ -27,17 +27,17 @@
 
 		<div class="flex items-center gap-2">
 			<Label for="min-age" class="visually-hidden">Minimum Age</Label>
-			<Input id="min-age" bind:value={filterState.ageMin} type="number" />
+			<Input id="min-age" bind:value={filterState.ageMin} type="number" placeholder="min" />
 
 			<span>to</span>
 
 			<Label for="max-age" class="visually-hidden">Maximum Age</Label>
-			<Input id="max-age" bind:value={filterState.ageMax} type="number" />
+			<Input id="max-age" bind:value={filterState.ageMax} type="number" placeholder="max" />
 		</div>
 	</section>
 
 	<section class="flex w-full flex-col items-center gap-2">
 		<Label for="zip-codes">Zip Codes</Label>
-		<Input id="zip-codes" bind:value={filterState.zipCodes}></Input>
+		<Input id="zip-codes" bind:value={filterState.zipCodes} placeholder="53713, 53188" />
 	</section>
 </aside>
