@@ -4,9 +4,20 @@ import { getDogMatch, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
 export class DogMatchState {
 	matchedDogs = $state<Dog[]>([]);
 
+	#isDogIdInMatchedList = (searchId: string) => {
+		return this.matchedDogs.some((matchedDog) => matchedDog.id === searchId);
+	};
+
 	fetchDogMatch = async (dogIds: string[], availableDogs: Dog[]) => {
 		const dogMatchId = await getDogMatch(dogIds);
 		if (!dogMatchId?.match) return;
+
+		// If dog is already in matched just create a shallow copy of list to still trigger
+		// switching tab view to matched dogs
+		if (this.#isDogIdInMatchedList(dogMatchId.match)) {
+			this.matchedDogs = [...this.matchedDogs];
+			return;
+		}
 
 		// Check if dog is already in current available dogs state
 		const matchedDogInState = availableDogs.find((dog) => dog.id === dogMatchId.match);
