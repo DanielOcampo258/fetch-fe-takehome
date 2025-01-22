@@ -18,4 +18,8 @@ export class DogMatchState {
 		// Not in state, so we fetch dog data with id
 		this.matchedDogs.push((await getDogsFromIds([dogMatchId.match]))[0]);
 	};
+
+	removeFromMatches = (dogIdToRemove: string) => {
+		this.matchedDogs = this.matchedDogs.filter((matchedDog) => matchedDog.id !== dogIdToRemove);
+	};
 }

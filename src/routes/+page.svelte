@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DogMatch from '$lib/components/DogMatch/DogMatch.svelte';
 	import DogSearch from '$lib/components/homePage/DogSearch.svelte';
 	import { DogMatchState } from '$lib/components/homePage/state/DogMatchState.svelte';
 	import { FavoritesState } from '$lib/components/homePage/state/FilterState.svelte';
@@ -31,4 +32,6 @@
 
 {#if selectedTab === 'search'}
 	<DogSearch {favoritesList} fetchDogMatch={dogMatchState.fetchDogMatch} />
+{:else}
+	<DogMatch {dogMatchState} />
 {/if}
