@@ -1,14 +1,14 @@
 <script lang="ts">
 	import * as Pagination from '$lib/components/ui/pagination';
 
-	let { pageCount: count, currentPage = $bindable() } = $props();
+	let { totalDogs: count, dogsPerPage: perPage, currentPage = $bindable() } = $props();
 
 	function scrollToTop() {
 		window.scrollTo({ top: 0 });
 	}
 </script>
 
-<Pagination.Root {count} bind:page={currentPage} onPageChange={scrollToTop}>
+<Pagination.Root {count} {perPage} bind:page={currentPage} onPageChange={scrollToTop}>
 	{#snippet children({ pages, currentPage })}
 		<Pagination.Content>
 			<Pagination.Item>

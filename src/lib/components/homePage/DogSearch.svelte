@@ -15,10 +15,19 @@
 	let dogs = $state<Dog[]>([]);
 	let dogsSearchResponse = $state<DogSeachApiResponse>();
 
-	let pageCount = $derived.by(() => {
-		if (!dogsSearchResponse?.total) return 1;
-		return Math.ceil(dogsSearchResponse.total / filterState.size);
-	});
+	/* NOTE:
+      Not sure if this is misunderstanding, but it seems like changing the "from"
+      parameter past 9975, will return a 500 status, even though that query total is 10,000
+      (at least to me) meaning that there are at least 10000 + 9975 more results. As well as
+      setting "from" to 9975, will return the next = "/dogs/search?size=25&from=10000&sort=name%3Aasc"
+      But requesting that url results in a 500 status.
+
+      Could just be my misunderstanding! But in the
+      case that it was just temporarily not working, this is what the totalDogs state calculation should have been
+      to get the accurate number of pages:
+      totalDogs = $derived(filterState.from + (dogsSearchResponse?.total ?? 0));
+    */
+	let totalDogs = $derived<number>(dogsSearchResponse?.total ?? 0);
 
 	async function getDogs(queryString: string) {
 		try {
@@ -68,5 +77,9 @@
 </main>
 
 <footer class="pb-5">
-	<DogPagination {pageCount} bind:currentPage={filterState.currentPage} />
+	<DogPagination
+		{totalDogs}
+		dogsPerPage={filterState.size}
+		bind:currentPage={filterState.currentPage}
+	/>
 </footer>
