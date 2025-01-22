@@ -2,7 +2,7 @@
 	import type { Dog } from '$lib/api/dogs/models';
 	import * as Card from '$lib/components/ui/card/index';
 	import { Button } from '../ui/button';
-	import type { FavoritesState } from './state/DogMatching.svelte';
+	import type { FavoritesState } from './state/FilterState.svelte';
 	import Heart from 'lucide-svelte/icons/heart';
 
 	let { dogData, favoritesList }: { dogData: Dog; favoritesList: FavoritesState } = $props();

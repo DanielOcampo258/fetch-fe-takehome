@@ -20,14 +20,29 @@ export async function getDogIds(queryString: string): Promise<DogSeachApiRespons
 	return res.json();
 }
 
-export async function getDogMatches(dogIds: DogSeachApiResponse): Promise<Dog[]> {
-	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.postDogMatches}`, {
+export async function getDogsFromIds(dogIds: string[]): Promise<Dog[]> {
+	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.postDogsIds}`, {
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		method: 'POST',
 		credentials: 'include',
-		body: JSON.stringify(dogIds.resultIds)
+		body: JSON.stringify(dogIds)
 	});
+	return res.json();
+}
+
+export async function getDogMatch(dogIds: string[]): Promise<string | null> {
+	if (dogIds.length === 0) return null;
+
+	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.postDogMatch}`, {
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		method: 'POST',
+		credentials: 'include',
+		body: JSON.stringify(dogIds)
+	});
+
 	return res.json();
 }

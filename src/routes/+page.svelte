@@ -1,15 +1,17 @@
 <script lang="ts">
 	import type { Dog, DogSeachApiResponse } from '$lib/api/dogs/models';
-	import { getDogIds, getDogMatches } from '$lib/api/dogs/utils.svelte';
+	import { getDogIds, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
 	import DogCard from '$lib/components/homePage/DogCard.svelte';
 	import DogPagination from '$lib/components/homePage/filtering/DogPagination.svelte';
 	import FilteringComponent from '$lib/components/homePage/filtering/FilteringComponent.svelte';
 	import { FilterState } from '$lib/components/homePage/filtering/state/FilterQueryState.svelte';
-	import { FavoritesState } from '$lib/components/homePage/state/DogMatching.svelte';
+	import { DogMatchState } from '$lib/components/homePage/state/DogMatchState.svelte';
+	import { FavoritesState } from '$lib/components/homePage/state/FilterState.svelte';
 	import { Button } from '$lib/components/ui/button';
 
 	const filterState = new FilterState();
 	const favoritesList = new FavoritesState();
+	const dogMatchState = new DogMatchState();
 
 	let dogs = $state<Dog[]>([]);
 	let dogsSearchResponse = $state<DogSeachApiResponse>();
@@ -22,7 +24,7 @@
 	async function getDogs(queryString: string) {
 		try {
 			dogsSearchResponse = await getDogIds(queryString);
-			dogs = await getDogMatches(dogsSearchResponse);
+			dogs = await getDogsFromIds(dogsSearchResponse.resultIds);
 		} catch {
 			// TODO: Implement error state
 		}
@@ -42,7 +44,13 @@
 <main class="flex flex-col items-center gap-5 p-12 md:flex-row md:items-start">
 	<aside class="top-10 flex flex-col gap-5 md:sticky">
 		<FilteringComponent {filterState} />
-		<Button class="w-full" disabled={favoritesList.size === 0}>Find a match from favorites</Button>
+		<Button
+			class="w-full"
+			disabled={favoritesList.size === 0}
+			onclick={() => {
+				dogMatchState.fetchDogMatch(Array.from(favoritesList.dogIds), dogs);
+			}}>Find a match from favorites</Button
+		>
 	</aside>
 
 	<section class="grid grid-cols-1 gap-5 md:grid-cols-3">
