@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import BreedSearchComboBox from './BreedSearchComboBox.svelte';
-	import { DogBreedsHandler } from './state/DogBreedState.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
+	import { DogBreedsHandler } from '../homePage/filtering/state/DogBreedState.svelte';
+	import BreedSearchComboBox from '../homePage/filtering/BreedSearchComboBox.svelte';
+	import SortingComponent from '../homePage/filtering/SortingComponent.svelte';
 	import type { FilterState } from './state/FilterQueryState.svelte';
-	import SortingComponent from './SortingComponent.svelte';
 
 	const dogBreeds = new DogBreedsHandler();
 

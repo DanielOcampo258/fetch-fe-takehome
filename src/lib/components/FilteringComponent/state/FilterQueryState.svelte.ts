@@ -1,20 +1,6 @@
 import type { DogSeachQuery } from '$lib/api/dogs/models';
-
-type SortCategory = 'Name' | 'Breed' | 'Age';
-type SortDirection = 'Asc' | 'Desc';
-
-const INITIAL_SORT_CATEGORY: SortCategory = 'Name';
-const INITIAL_SORT_DIRECTION: SortDirection = 'Asc';
-
-const INITIAL_EMPTY_FILTER: DogSeachQuery = {
-	breeds: [],
-	ageMin: null,
-	ageMax: null,
-	zipCodes: [''],
-	size: 25,
-	from: 0,
-	sort: `${INITIAL_SORT_CATEGORY.toLowerCase()}:${INITIAL_SORT_DIRECTION.toLowerCase()}`
-};
+import { INITIAL_EMPTY_FILTER } from '../constants';
+import type { SortCategory, SortDirection } from '../types';
 
 export class FilterState implements DogSeachQuery {
 	readonly size = INITIAL_EMPTY_FILTER.size;

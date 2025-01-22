@@ -5,8 +5,8 @@
 	import Heart from 'lucide-svelte/icons/heart';
 	import DogCard from './DogCard.svelte';
 	import DogPagination from './filtering/DogPagination.svelte';
-	import FilteringComponent from './filtering/FilteringComponent.svelte';
-	import { FilterState } from './filtering/state/FilterQueryState.svelte';
+	import FilteringComponent from '../FilteringComponent/FilteringComponent.svelte';
+	import { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
 
 	let { favoritesList, fetchDogMatch } = $props();
 
