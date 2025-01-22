@@ -2,6 +2,7 @@
 	import type { Dog, DogSeachApiResponse } from '$lib/api/dogs/models';
 	import { getDogIds, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
 	import { Button } from '$lib/components/ui/button';
+	import Heart from 'lucide-svelte/icons/heart';
 	import DogCard from './DogCard.svelte';
 	import DogPagination from './filtering/DogPagination.svelte';
 	import FilteringComponent from './filtering/FilteringComponent.svelte';
@@ -48,7 +49,19 @@
 
 		<section class="grid grid-cols-1 gap-5 md:grid-cols-3">
 			{#each dogs as dogData (dogData.id)}
-				<DogCard {dogData} {favoritesList} />
+				<DogCard {dogData}>
+					{#snippet cardAction(dog: Dog)}
+						<Button
+							aria-label={favoritesList.getAriaLabel(dog)}
+							aria-pressed={favoritesList.isFavorited(dog.id)}
+							size="icon"
+							variant="ghost"
+							onclick={() => favoritesList.toggleFavoriteState(dog.id)}
+						>
+							<Heart fill={favoritesList.isFavorited(dogData.id) ? '#000' : 'none'} />
+						</Button>
+					{/snippet}
+				</DogCard>
 			{/each}
 		</section>
 	</section>

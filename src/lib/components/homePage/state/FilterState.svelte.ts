@@ -1,3 +1,4 @@
+import type { Dog } from '$lib/api/dogs/models';
 import { SvelteSet } from 'svelte/reactivity';
 
 interface Favorites {
@@ -26,5 +27,13 @@ export class FavoritesState implements Favorites {
 
 	isFavorited = (id: string) => {
 		return this.dogIds.has(id);
+	};
+
+	getAriaLabel = (dogData: Dog) => {
+		if (this.isFavorited(dogData.id)) {
+			return `Remove ${dogData.name}, ${dogData.breed}, located in zip code ${dogData.zip_code} from favorites list`;
+		} else {
+			return `Add ${dogData.name}, ${dogData.breed}, located in zip code ${dogData.zip_code} to favorites list`;
+		}
 	};
 }

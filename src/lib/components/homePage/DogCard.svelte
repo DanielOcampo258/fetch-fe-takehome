@@ -1,17 +1,9 @@
 <script lang="ts">
 	import type { Dog } from '$lib/api/dogs/models';
 	import * as Card from '$lib/components/ui/card/index';
-	import { Button } from '../ui/button';
-	import type { FavoritesState } from './state/FilterState.svelte';
-	import Heart from 'lucide-svelte/icons/heart';
+	import type { Snippet } from 'svelte';
 
-	let { dogData, favoritesList }: { dogData: Dog; favoritesList: FavoritesState } = $props();
-
-	let ariaFavoritesLabel = $derived(
-		favoritesList.isFavorited(dogData.id)
-			? `Remove ${dogData.name}, ${dogData.breed}, located in zip code ${dogData.zip_code} from favorites list`
-			: `Add ${dogData.name}, ${dogData.breed}, located in zip code ${dogData.zip_code} to favorites list`
-	);
+	let { dogData, cardAction }: { dogData: Dog; cardAction?: Snippet<[Dog]> } = $props();
 </script>
 
 <Card.Root>
@@ -26,15 +18,9 @@
 				<p class="leading-7"><span class="font-bold">Zip Code:</span> {dogData.zip_code}</p>
 			</div>
 
-			<Button
-				aria-label={ariaFavoritesLabel}
-				aria-pressed={favoritesList.isFavorited(dogData.id)}
-				size="icon"
-				variant="ghost"
-				onclick={() => favoritesList.toggleFavoriteState(dogData.id)}
-			>
-				<Heart fill={favoritesList.isFavorited(dogData.id) ? '#000' : 'none'} />
-			</Button>
+			{#if cardAction}
+				{@render cardAction(dogData)}
+			{/if}
 		</section>
 	</Card.Footer>
 </Card.Root>
