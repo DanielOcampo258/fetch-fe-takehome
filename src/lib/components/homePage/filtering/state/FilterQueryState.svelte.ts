@@ -34,7 +34,7 @@ export class FilterState implements DogSeachQuery {
 	sort = $derived(`${this.sortCategory.toLowerCase()}:${this.sortDirection.toLowerCase()}`);
 
 	addSelectedBreed = (newBreed: string) => {
-		this.breeds = [...this.breeds, newBreed];
+		this.breeds.push(newBreed);
 	};
 
 	removeSelectedBreed = (breedToRemove: string) => {
