@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../constants';
 import { DogApiRoutes } from './constants';
-import type { Dog, DogSeachApiResponse } from './models';
+import type { Dog, DogMatch, DogSeachApiResponse } from './models';
 
 export async function getAllDogBreeds(): Promise<string[]> {
 	try {
@@ -32,7 +32,7 @@ export async function getDogsFromIds(dogIds: string[]): Promise<Dog[]> {
 	return res.json();
 }
 
-export async function getDogMatch(dogIds: string[]): Promise<string | null> {
+export async function getDogMatch(dogIds: string[]): Promise<DogMatch | null> {
 	if (dogIds.length === 0) return null;
 
 	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.postDogMatch}`, {
