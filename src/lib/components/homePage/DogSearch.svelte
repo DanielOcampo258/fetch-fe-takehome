@@ -4,9 +4,10 @@
 	import { Button } from '$lib/components/ui/button';
 	import Heart from 'lucide-svelte/icons/heart';
 	import DogCard from './DogCard.svelte';
-	import DogPagination from './filtering/DogPagination.svelte';
+
 	import FilteringComponent from '../FilteringComponent/FilteringComponent.svelte';
 	import { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
+	import DogPagination from '../DogPagination/DogPagination.svelte';
 
 	let { favoritesList, fetchDogMatch } = $props();
 

@@ -8,7 +8,13 @@
 	}
 </script>
 
-<Pagination.Root {count} {perPage} bind:page={currentPage} onPageChange={scrollToTop}>
+<Pagination.Root
+	data-testid="pagination-root"
+	{count}
+	{perPage}
+	bind:page={currentPage}
+	onPageChange={scrollToTop}
+>
 	{#snippet children({ pages, currentPage })}
 		<Pagination.Content>
 			<Pagination.Item>
@@ -23,7 +29,11 @@
 					</Pagination.Item>
 				{:else}
 					<Pagination.Item>
-						<Pagination.Link {page} isActive={currentPage === page.value}>
+						<Pagination.Link
+							data-testid="page-{page.value}"
+							{page}
+							isActive={currentPage === page.value}
+						>
 							{page.value}
 						</Pagination.Link>
 					</Pagination.Item>
