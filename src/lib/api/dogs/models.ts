@@ -5,7 +5,7 @@ export interface DogSeachQuery {
 	ageMax: number | null;
 	size: number;
 	from: number;
-	sort: string | null;
+	sort: string;
 }
 
 export interface DogSeachApiResponse {

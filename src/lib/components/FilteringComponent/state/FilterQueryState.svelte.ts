@@ -27,14 +27,13 @@ export class FilterState implements DogSeachQuery {
 		this.breeds = this.breeds.filter((breed) => breed !== breedToRemove);
 	};
 
-	// TODO: ADD TESTS
-	toQueryParamString = (queryObject: DogSeachQuery) => {
+	#toQueryParamString = (queryObject: DogSeachQuery) => {
 		if (queryObject === INITIAL_EMPTY_FILTER) return '';
 
 		const searchParams = new URLSearchParams();
 
 		for (const [key, value] of Object.entries(queryObject)) {
-			if (!value) continue;
+			if (value === null || (typeof value === 'string' && value.length === 0)) continue;
 
 			// Check if it is array to handle "breeds" case
 			if (Array.isArray(value)) {
@@ -51,7 +50,7 @@ export class FilterState implements DogSeachQuery {
 	};
 
 	queryString = $derived(
-		this.toQueryParamString({
+		this.#toQueryParamString({
 			breeds: this.breeds,
 			ageMax: this.ageMax,
 			ageMin: this.ageMin,
