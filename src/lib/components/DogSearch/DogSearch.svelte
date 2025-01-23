@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { Dog, DogSeachApiResponse } from '$lib/api/dogs/models';
-	import { getDogIds, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
+	import type { Dog } from '$lib/api/dogs/models';
 	import { Button } from '$lib/components/ui/button';
 	import Heart from 'lucide-svelte/icons/heart';
 
@@ -8,39 +7,15 @@
 	import { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
 	import DogPagination from '../DogPagination/DogPagination.svelte';
 	import DogCard from '../homePage/DogCard.svelte';
+	import { DogSearchState } from './state/DogSearchState.svelte';
 
 	let { favoritesList, fetchDogMatch } = $props();
 
 	const filterState = new FilterState();
-
-	let dogs = $state<Dog[]>([]);
-	let dogsSearchResponse = $state<DogSeachApiResponse>();
-
-	/* NOTE:
-      Not sure if this is misunderstanding, but it seems like changing the "from"
-      parameter past 9975, will return a 500 status, even though that query total is 10,000
-      (at least to me) meaning that there are at least 10000 + 9975 more results. As well as
-      setting "from" to 9975, will return the next = "/dogs/search?size=25&from=10000&sort=name%3Aasc"
-      But requesting that url results in a 500 status.
-
-      Could just be my misunderstanding! But in the
-      case that it was just temporarily not working, this is what the totalDogs state calculation should have been
-      to get the accurate number of pages:
-      totalDogs = $derived(filterState.from + (dogsSearchResponse?.total ?? 0));
-    */
-	let totalDogs = $derived<number>(dogsSearchResponse?.total ?? 0);
-
-	async function getDogs(queryString: string) {
-		try {
-			dogsSearchResponse = await getDogIds(queryString);
-			dogs = await getDogsFromIds(dogsSearchResponse.resultIds);
-		} catch {
-			// TODO: Implement error state
-		}
-	}
+	const dogSearchState = new DogSearchState();
 
 	$effect(() => {
-		getDogs(filterState.queryString);
+		dogSearchState.getDogsFromQuery(filterState.queryString);
 	});
 </script>
 
@@ -52,13 +27,13 @@
 				class="w-full"
 				disabled={favoritesList.size === 0}
 				onclick={() => {
-					fetchDogMatch(Array.from(favoritesList.dogIds), dogs);
+					fetchDogMatch(Array.from(favoritesList.dogIds), dogSearchState.dogs);
 				}}>Find a match from favorites</Button
 			>
 		</aside>
 
 		<section class="grid grid-cols-1 gap-5 md:grid-cols-3">
-			{#each dogs as dogData (dogData.id)}
+			{#each dogSearchState.dogs as dogData (dogData.id)}
 				<DogCard {dogData}>
 					{#snippet cardAction(dog: Dog)}
 						<Button
@@ -79,7 +54,7 @@
 
 <footer class="pb-5">
 	<DogPagination
-		{totalDogs}
+		totalDogs={dogSearchState.totalDogs}
 		dogsPerPage={filterState.size}
 		bind:currentPage={filterState.currentPage}
 	/>

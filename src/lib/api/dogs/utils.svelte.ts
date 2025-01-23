@@ -21,6 +21,8 @@ export async function getDogIds(queryString: string): Promise<DogSeachApiRespons
 }
 
 export async function getDogsFromIds(dogIds: string[]): Promise<Dog[]> {
+	if (dogIds.length === 0) return [];
+
 	const res = await fetch(`${API_BASE_URL}/${DogApiRoutes.postDogsIds}`, {
 		headers: {
 			'Content-Type': 'application/json'
