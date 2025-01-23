@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DogMatch from '$lib/components/DogMatch/DogMatch.svelte';
+	import { DogMatchState } from '$lib/components/DogMatch/state/DogMatchState.svelte';
 	import DogSearch from '$lib/components/homePage/DogSearch.svelte';
-	import { DogMatchState } from '$lib/components/homePage/state/DogMatchState.svelte';
 	import { FavoritesState } from '$lib/components/homePage/state/FilterState.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 

@@ -6,7 +6,7 @@
 	let { dogData, cardAction }: { dogData: Dog; cardAction?: Snippet<[Dog]> } = $props();
 </script>
 
-<Card.Root>
+<Card.Root data-testid="dog-card-{dogData.id}">
 	<Card.Content class="h-72 w-full">
 		<img class="h-full w-full rounded-t-lg object-cover" src={dogData.img} alt={dogData.name} />
 	</Card.Content>

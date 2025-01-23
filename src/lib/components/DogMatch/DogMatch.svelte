@@ -3,7 +3,7 @@
 	import DogCard from '../homePage/DogCard.svelte';
 	import { Button } from '../ui/button';
 	import type { Dog } from '$lib/api/dogs/models';
-	import type { DogMatchState } from '../homePage/state/DogMatchState.svelte';
+	import type { DogMatchState } from './state/DogMatchState.svelte';
 
 	let { dogMatchState }: { dogMatchState: DogMatchState } = $props();
 </script>
@@ -23,6 +23,7 @@
 				<DogCard {dogData}>
 					{#snippet cardAction(dog: Dog)}
 						<Button
+							data-testid="remove-dog-match-{dog.id}"
 							size="icon"
 							aria-label={`Remove ${dog.name}, ${dog.breed}, located in zip code ${dog.zip_code} from matched list`}
 							aria-pressed="false"
