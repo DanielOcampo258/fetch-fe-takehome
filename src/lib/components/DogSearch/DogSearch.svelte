@@ -3,11 +3,11 @@
 	import { getDogIds, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Heart from 'lucide-svelte/icons/heart';
-	import DogCard from './DogCard.svelte';
 
 	import FilteringComponent from '../FilteringComponent/FilteringComponent.svelte';
 	import { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
 	import DogPagination from '../DogPagination/DogPagination.svelte';
+	import DogCard from '../homePage/DogCard.svelte';
 
 	let { favoritesList, fetchDogMatch } = $props();
 
