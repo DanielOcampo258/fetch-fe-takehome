@@ -8,11 +8,24 @@
 	import DogPagination from '../DogPagination/DogPagination.svelte';
 	import DogCard from '../homePage/DogCard.svelte';
 	import { DogSearchState } from './state/DogSearchState.svelte';
+	import { untrack } from 'svelte';
 
 	let { favoritesList, fetchDogMatch } = $props();
 
 	const filterState = new FilterState();
 	const dogSearchState = new DogSearchState();
+
+	$effect(() => {
+		// If filters change, reset to first page
+		if (
+			filterState.ageMin ||
+			filterState.ageMax ||
+			filterState.breeds.length ||
+			filterState.zipCodeInput
+		) {
+			untrack(() => (filterState.currentPage = 1));
+		}
+	});
 
 	$effect(() => {
 		dogSearchState.getDogsFromQuery(filterState.queryString);
