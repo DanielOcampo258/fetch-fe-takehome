@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { LoginHandler } from '$lib/api/auth/LoginHandler.svelte';
 	import { Button } from '../ui/button';
 	import { Input } from '../ui/input';
@@ -17,10 +18,12 @@
 		if (!validData) return;
 
 		await loginHandler.loginUser(validData);
+
+		if (!loginHandler.error.apiResponse) goto('/');
 	}
 </script>
 
-<form method="POST" class="flex flex-col gap-4" onsubmit={submitForm}>
+<form data-testid="login-form" method="POST" class="flex flex-col gap-3" onsubmit={submitForm}>
 	{#if loginHandler.error.apiResponse}
 		<p class="rounded-sm bg-red-100 p-4 text-red-900">{loginHandler.error?.apiResponse}</p>
 	{/if}
@@ -28,13 +31,13 @@
 	<section class="flex flex-col gap-2">
 		<div>
 			<Label for="name">Name</Label>
-			<Input id="name" name="name" required></Input>
+			<Input id="name" data-testid="name" name="name" required></Input>
 			<InputErrorHandler errors={loginHandler.error?.validation} inputName="name" />
 		</div>
 
 		<div>
 			<Label for="email">Email</Label>
-			<Input id="email" name="email" type="email" required></Input>
+			<Input id="email" name="email" data-testid="email" type="email" required></Input>
 			<InputErrorHandler errors={loginHandler.error?.validation} inputName="email" />
 		</div>
 	</section>

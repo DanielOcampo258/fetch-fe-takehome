@@ -20,10 +20,8 @@ export class LoginHandler implements LoginState {
 		return parsingResult.data;
 	}
 
-	//TODO: ADD TESTS
 	loginUser = async (credentials: LoginData) => {
 		try {
-			//TODO: Centralize fetch calls in hook to set base url and request config in one place
 			const res = await fetch(`${API_BASE_URL}/${AuthRoutes.Login}`, {
 				credentials: 'include',
 				headers: {
@@ -39,8 +37,6 @@ export class LoginHandler implements LoginState {
 					`Failed authentication request: Status code ${res.status}, with message: ${apiMessage}`
 				);
 			}
-
-			goto('/');
 		} catch (error: unknown) {
 			this.isSubmitting = false;
 
