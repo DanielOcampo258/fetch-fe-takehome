@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Label } from '$lib/components/ui/label';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import type { FilterState } from './state/FilterQueryState.svelte';
+	import type { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
 
 	let { allDogBreeds, filterState }: { allDogBreeds: string[]; filterState: FilterState } =
 		$props();
@@ -18,7 +18,6 @@
 		comboboxButton.id = 'combobox-trigger';
 	});
 
-	// TODO: ADD TESTS
 	function refocusOnSearchBar() {
 		tick().then(() => {
 			searchRef.focus();
@@ -49,7 +48,11 @@
 
 		<Popover.Content class="p-0">
 			<Command.Root>
-				<Command.Input bind:ref={searchRef} placeholder="Search for dog breed" />
+				<Command.Input
+					data-testid="breed-search-input"
+					bind:ref={searchRef}
+					placeholder="Search for dog breed"
+				/>
 				<Command.List>
 					<Command.Empty>No Dog Breeds Found</Command.Empty>
 					<Command.Group>
@@ -59,6 +62,7 @@
 								<Checkbox
 									checked={filterState.breeds.includes(dogBreed)}
 									id={`${dogBreed}-checkbox`}
+									data-testid={`${dogBreed}-checkbox`}
 									onCheckedChange={(checked) => {
 										if (checked) {
 											filterState.addSelectedBreed(dogBreed);

@@ -3,9 +3,9 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import { DogBreedsHandler } from '../homePage/filtering/state/DogBreedState.svelte';
-	import BreedSearchComboBox from '../homePage/filtering/BreedSearchComboBox.svelte';
 	import SortingComponent from '../homePage/filtering/SortingComponent.svelte';
 	import type { FilterState } from './state/FilterQueryState.svelte';
+	import BreedSearchComboBox from '../BreedSearchComboBox/BreedSearchComboBox.svelte';
 
 	const dogBreeds = new DogBreedsHandler();
 
