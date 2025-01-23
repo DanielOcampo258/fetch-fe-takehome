@@ -12,7 +12,7 @@ export interface LoginState {
 	error: LoginError;
 }
 
-interface LoginError {
+export interface LoginError {
 	validation?: ZodFormattedError<LoginData>;
 	apiResponse?: string;
 }
