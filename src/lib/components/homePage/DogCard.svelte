@@ -13,9 +13,10 @@
 	<Card.Footer class="">
 		<p class="p-2 text-center text-2xl font-bold leading-7">{dogData.name}</p>
 		<section class="flex items-end justify-between">
-			<div class="flex flex-col gap-2">
+			<div class="flex flex-col items-start gap-2">
 				<p class="leading-7"><span class="font-bold">Breed:</span> {dogData.breed}</p>
 				<p class="leading-7"><span class="font-bold">Zip Code:</span> {dogData.zip_code}</p>
+				<p class="leading-7"><span class="font-bold">Age:</span> {dogData.age}</p>
 			</div>
 
 			{#if cardAction}
