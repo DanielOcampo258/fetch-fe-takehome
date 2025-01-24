@@ -3,7 +3,7 @@ import { getDogIds, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
 
 export class DogSearchState {
 	dogs = $state<Dog[]>([]);
-	apiSearchResponse = $state<DogSeachApiResponse>();
+	apiSearchResponse = $state<DogSeachApiResponse | null>(null);
 	hasError = $state(false);
 	isLoading = $state(false);
 

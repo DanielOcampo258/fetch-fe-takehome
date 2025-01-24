@@ -9,9 +9,11 @@
 	import DogCard from '../homePage/DogCard.svelte';
 	import { DogSearchState } from './state/DogSearchState.svelte';
 	import { untrack } from 'svelte';
+	import { FavoritesState } from './state/FavoritesState.svelte';
 
-	let { favoritesList, fetchDogMatch } = $props();
+	let { fetchDogMatch } = $props();
 
+	const favoritesState = new FavoritesState();
 	const filterState = new FilterState();
 	const dogSearchState = new DogSearchState();
 
@@ -38,9 +40,9 @@
 			<FilteringComponent {filterState} />
 			<Button
 				class="w-full"
-				disabled={favoritesList.size === 0}
+				disabled={favoritesState.size === 0}
 				onclick={() => {
-					fetchDogMatch(Array.from(favoritesList.dogIds), dogSearchState.dogs);
+					fetchDogMatch(Array.from(favoritesState.dogIds), dogSearchState.dogs);
 				}}>Find a match from favorites</Button
 			>
 		</aside>
@@ -50,13 +52,13 @@
 				<DogCard {dogData}>
 					{#snippet cardAction(dog: Dog)}
 						<Button
-							aria-label={favoritesList.getAriaLabel(dog)}
-							aria-pressed={favoritesList.isFavorited(dog.id)}
+							aria-label={favoritesState.getAriaLabel(dog)}
+							aria-pressed={favoritesState.isFavorited(dog.id)}
 							size="icon"
 							variant="ghost"
-							onclick={() => favoritesList.toggleFavoriteState(dog.id)}
+							onclick={() => favoritesState.toggleFavoriteState(dog.id)}
 						>
-							<Heart fill={favoritesList.isFavorited(dogData.id) ? '#000' : 'none'} />
+							<Heart fill={favoritesState.isFavorited(dogData.id) ? '#000' : 'none'} />
 						</Button>
 					{/snippet}
 				</DogCard>

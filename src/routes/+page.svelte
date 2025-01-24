@@ -2,12 +2,9 @@
 	import DogMatch from '$lib/components/DogMatch/DogMatch.svelte';
 	import { DogMatchState } from '$lib/components/DogMatch/state/DogMatchState.svelte';
 	import DogSearch from '$lib/components/DogSearch/DogSearch.svelte';
-	import { FavoritesState } from '$lib/components/DogSearch/state/FilterState.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 
-	const favoritesList = new FavoritesState();
 	const dogMatchState = new DogMatchState();
-
 	let selectedTab = $state<'search' | 'match'>('search');
 
 	$effect(() => {
@@ -31,7 +28,7 @@
 </header>
 
 {#if selectedTab === 'search'}
-	<DogSearch {favoritesList} fetchDogMatch={dogMatchState.fetchDogMatch} />
+	<DogSearch fetchDogMatch={dogMatchState.fetchDogMatch} />
 {:else}
 	<DogMatch {dogMatchState} />
 {/if}
