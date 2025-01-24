@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/svelte';
 import { DogMatchState } from '../state/DogMatchState.svelte';
 import DogMatch from '../DogMatch.svelte';
 import type { Dog } from '$lib/api/dogs/models';
-import { mockDogs } from './constants';
+import { mockDogs } from '../../../testUtils';
 
 const mockFetch = vi.fn();
 globalThis.fetch = mockFetch;

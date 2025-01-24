@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DogMatchState } from '../state/DogMatchState.svelte';
 import type { Dog } from '$lib/api/dogs/models';
-import { mockDogs } from './constants';
+import { mockDogs } from '../../../testUtils';
 
 const mockFetch = vi.fn();
 globalThis.fetch = mockFetch;

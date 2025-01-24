@@ -34,3 +34,16 @@ export const mockDogs: Dog[] = [
 		breed: 'Poodle'
 	}
 ];
+
+export function generateMockDogs(quantity: number): Dog[] {
+	return [...Array(quantity).keys()].map((index) => {
+		return {
+			id: `dog-id-${index}`,
+			img: `dog-img-${index}`,
+			name: `${mockDogs[index % mockDogs.length].name}-${index}`,
+			age: index,
+			zip_code: mockDogs[index % mockDogs.length].zip_code,
+			breed: mockDogs[index % mockDogs.length].breed
+		};
+	});
+}
