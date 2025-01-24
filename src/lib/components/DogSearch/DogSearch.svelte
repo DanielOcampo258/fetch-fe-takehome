@@ -36,7 +36,7 @@
 
 <main>
 	<section class="flex flex-col items-center gap-5 p-12 md:flex-row md:items-start">
-		<aside class="top-10 flex flex-col gap-5 md:sticky">
+		<aside class="top-10 flex flex-col gap-5 md:sticky md:max-w-xs">
 			<FilteringComponent {filterState} />
 			<Button
 				class="w-full"
@@ -47,7 +47,7 @@
 			>
 		</aside>
 
-		<section class="grid grid-cols-1 gap-5 md:grid-cols-3">
+		<section class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
 			{#each dogSearchState.dogs as dogData (dogData.id)}
 				<DogCard {dogData}>
 					{#snippet cardAction(dog: Dog)}
