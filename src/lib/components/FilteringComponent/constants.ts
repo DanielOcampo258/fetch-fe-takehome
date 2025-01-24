@@ -1,7 +1,7 @@
 import type { DogSeachQuery } from '$lib/api/dogs/models';
 import type { SortCategory, SortDirection } from './types';
 
-export const INITIAL_SORT_CATEGORY: SortCategory = 'Name';
+export const INITIAL_SORT_CATEGORY: SortCategory = 'Breed';
 export const INITIAL_SORT_DIRECTION: SortDirection = 'Asc';
 
 export const INITIAL_EMPTY_FILTER: DogSeachQuery = {

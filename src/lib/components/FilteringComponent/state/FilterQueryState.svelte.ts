@@ -1,5 +1,5 @@
 import type { DogSeachQuery } from '$lib/api/dogs/models';
-import { INITIAL_EMPTY_FILTER } from '../constants';
+import { INITIAL_EMPTY_FILTER, INITIAL_SORT_CATEGORY, INITIAL_SORT_DIRECTION } from '../constants';
 import type { SortCategory, SortDirection } from '../types';
 
 export class FilterState implements DogSeachQuery {
@@ -15,8 +15,8 @@ export class FilterState implements DogSeachQuery {
 	currentPage = $state(1);
 	from = $derived((this.currentPage - 1) * this.size);
 
-	sortCategory = $state<SortCategory>('Name');
-	sortDirection = $state<SortDirection>('Asc');
+	sortCategory = $state<SortCategory>(INITIAL_SORT_CATEGORY);
+	sortDirection = $state<SortDirection>(INITIAL_SORT_DIRECTION);
 	sort = $derived(`${this.sortCategory.toLowerCase()}:${this.sortDirection.toLowerCase()}`);
 
 	addSelectedBreed = (newBreed: string) => {
