@@ -6,6 +6,7 @@
 	import type { FilterState } from './state/FilterQueryState.svelte';
 	import BreedSearchComboBox from '../BreedSearchComboBox/BreedSearchComboBox.svelte';
 	import { DogBreedsHandler } from '../BreedSearchComboBox/state/DogBreedState.svelte';
+	import { debounce } from '$lib/utils';
 
 	const dogBreeds = new DogBreedsHandler();
 
@@ -54,7 +55,10 @@
 		<Input
 			id="zip-codes"
 			data-testid="zip-codes"
-			bind:value={filterState.zipCodeInput}
+			onkeyup={debounce(
+				(e) => (filterState.zipCodeInput = (e.target as HTMLInputElement).value),
+				700
+			)}
 			placeholder="53713, 53188"
 		/>
 	</section>

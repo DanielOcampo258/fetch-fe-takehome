@@ -1,13 +1,21 @@
 import { render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import FilteringComponent from '../FilteringComponent.svelte';
 import { FilterState } from '../state/FilterQueryState.svelte';
 
 describe('FilteringComponent', () => {
+	beforeAll(() => {
+		vi.useFakeTimers();
+	});
+
+	beforeEach(() => {
+		vi.clearAllTimers();
+	});
+
 	describe('Age range filtering', () => {
 		it('should have a binding between minimum age input and minimum age state', async () => {
-			const user = userEvent.setup();
+			const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 			const filterState = new FilterState();
 
 			render(FilteringComponent, { filterState });
@@ -19,7 +27,7 @@ describe('FilteringComponent', () => {
 		});
 
 		it('should have a binding between maximum age input and maximum age state', async () => {
-			const user = userEvent.setup();
+			const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 			const filterState = new FilterState();
 
 			render(FilteringComponent, { filterState });
@@ -33,7 +41,7 @@ describe('FilteringComponent', () => {
 
 	describe('Zip code filtering', () => {
 		it('should bind zip code input to state, and format the text properly', async () => {
-			const user = userEvent.setup();
+			const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
 			const mockZipCodes = '98377, 12345, 76894';
 			const filterState = new FilterState();
 
@@ -41,6 +49,8 @@ describe('FilteringComponent', () => {
 
 			const zipCodeInput = screen.getByTestId('zip-codes');
 			await user.type(zipCodeInput, mockZipCodes);
+
+			await vi.runAllTimersAsync();
 
 			expect(filterState.zipCodeInput).toBe(mockZipCodes);
 			expect(filterState.zipCodes).toStrictEqual(['98377', '12345', '76894']);

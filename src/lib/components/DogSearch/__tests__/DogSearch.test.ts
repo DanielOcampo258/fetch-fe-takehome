@@ -149,6 +149,7 @@ describe('DogSearch', () => {
 			await runPageResetTest(async () => {
 				const zipCodeInput = screen.getByTestId('zip-codes');
 				await user.type(zipCodeInput, '31233');
+				await vi.runAllTimersAsync();
 			});
 		});
 
