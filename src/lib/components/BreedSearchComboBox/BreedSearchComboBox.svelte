@@ -15,7 +15,7 @@
 
 	onMount(() => {
 		// Work around for accessibility as regular shadcn-ui buttons are given pre-existing ids
-		comboboxButton.id = 'combobox-trigger';
+		comboboxButton.id = 'dog-breed-combobox-trigger';
 	});
 
 	function refocusOnSearchBar() {

@@ -5,10 +5,12 @@
 	import type { FilterState } from './state/FilterQueryState.svelte';
 	import BreedSearchComboBox from '../BreedSearchComboBox/BreedSearchComboBox.svelte';
 	import { DogBreedsHandler } from '../BreedSearchComboBox/state/DogBreedState.svelte';
-	import { debounce } from '$lib/utils';
 	import SortingComponent from '../SortingComponent/SortingComponent.svelte';
+	import { LocationSearchState } from '../LocationSearch/state/LocationSearchState.svelte';
+	import LocationSearch from '../LocationSearch/LocationSearch.svelte';
 
 	const dogBreeds = new DogBreedsHandler();
+	const locationSearchState = new LocationSearchState();
 
 	onMount(() => {
 		dogBreeds.fetchAllDogBreeds();
@@ -18,6 +20,7 @@
 </script>
 
 <section class="flex w-full flex-col items-center gap-5 lg:max-w-64">
+	<LocationSearch {locationSearchState} />
 	<BreedSearchComboBox allDogBreeds={dogBreeds.data} {filterState} />
 
 	<section class="w-full text-center">
@@ -48,19 +51,6 @@
 				placeholder="max"
 			/>
 		</div>
-	</section>
-
-	<section class="flex w-full flex-col items-center gap-2">
-		<Label for="zip-codes">Zip Codes</Label>
-		<Input
-			id="zip-codes"
-			data-testid="zip-codes"
-			onkeyup={debounce(
-				(e) => (filterState.zipCodeInput = (e.target as HTMLInputElement).value),
-				700
-			)}
-			placeholder="53713, 53188"
-		/>
 	</section>
 
 	<SortingComponent
