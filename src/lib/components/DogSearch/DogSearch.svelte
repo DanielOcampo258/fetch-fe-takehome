@@ -30,7 +30,7 @@
 	});
 
 	$effect(() => {
-		dogSearchState.getDogsFromQuery(filterState.queryString);
+		dogSearchState.getDogsFromQuery(filterState.queryParams);
 	});
 </script>
 
