@@ -13,6 +13,7 @@ export class LoginHandler implements LoginState {
 		// Set error state on invalid data
 		if (!parsingResult.success) {
 			this.error.validation = parsingResult.error.format();
+			this.isSubmitting = false;
 			return null;
 		}
 

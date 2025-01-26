@@ -19,6 +19,8 @@
 
 		await loginHandler.loginUser(validData);
 
+		// At this point, if we have no api response error or input error
+		// redirect authenticated user to index page
 		if (!loginHandler.error.apiResponse) goto('/');
 	}
 </script>
