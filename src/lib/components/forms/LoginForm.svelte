@@ -23,7 +23,7 @@
 	}
 </script>
 
-<form data-testid="login-form" method="POST" class="flex flex-col gap-3" onsubmit={submitForm}>
+<form method="POST" class="flex flex-col gap-3" onsubmit={submitForm}>
 	{#if loginHandler.error.apiResponse}
 		<p class="rounded-sm bg-red-100 p-4 text-red-900">{loginHandler.error?.apiResponse}</p>
 	{/if}
