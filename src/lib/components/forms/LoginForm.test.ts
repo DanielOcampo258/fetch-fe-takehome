@@ -3,15 +3,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import LoginForm from './LoginForm.svelte';
 import userEvent from '@testing-library/user-event';
 import { goto } from '$app/navigation';
+import { publicFetch } from '$lib/api/utils';
 
 vi.mock('$app/navigation');
-
-const mockFetch = vi.fn();
-globalThis.fetch = mockFetch;
+vi.mock('$lib/api/utils');
 
 describe('LoginForm', () => {
 	afterEach(() => {
-		vi.restoreAllMocks();
+		vi.clearAllMocks();
 	});
 
 	it('should display input error messages with invalid data format', async () => {
@@ -39,11 +38,7 @@ describe('LoginForm', () => {
 		const mockApiResponseMessage = 'Server is undergoing maintenance';
 		const expectedErrorMessage = `Failed authentication request: Status code ${mockStatus}, with message: ${mockApiResponseMessage}`;
 
-		mockFetch.mockResolvedValueOnce({
-			ok: false,
-			status: mockStatus,
-			text: vi.fn().mockResolvedValueOnce(mockApiResponseMessage)
-		});
+		vi.mocked(publicFetch.post).mockRejectedValueOnce(new Error(expectedErrorMessage));
 
 		const nameInput = screen.getByTestId('name');
 		await user.type(nameInput, 'Daniel');
@@ -61,7 +56,7 @@ describe('LoginForm', () => {
 		const user = userEvent.setup();
 		render(LoginForm);
 
-		mockFetch.mockResolvedValueOnce({ ok: true });
+		vi.mocked(publicFetch.post).mockResolvedValueOnce({ ok: true });
 
 		const nameInput = screen.getByTestId('name');
 		await user.type(nameInput, 'Daniel');

@@ -1,7 +1,6 @@
-import { goto } from '$app/navigation';
-import { API_BASE_URL } from '$lib/api/constants';
 import { AuthRoutes } from './constants';
 import { LoginSchema, type LoginData, type LoginError, type LoginState } from './models';
+import { publicFetch } from '../utils';
 
 export class LoginHandler implements LoginState {
 	isSubmitting = $state(false);
@@ -22,21 +21,9 @@ export class LoginHandler implements LoginState {
 
 	loginUser = async (credentials: LoginData) => {
 		try {
-			const res = await fetch(`${API_BASE_URL}/${AuthRoutes.Login}`, {
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				method: 'POST',
-				body: JSON.stringify(credentials)
+			await publicFetch.post(AuthRoutes.Login, credentials, {
+				withCredentials: true
 			});
-
-			if (!res.ok) {
-				const apiMessage = await res.text();
-				throw new Error(
-					`Failed authentication request: Status code ${res.status}, with message: ${apiMessage}`
-				);
-			}
 		} catch (error: unknown) {
 			this.isSubmitting = false;
 

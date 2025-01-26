@@ -1,10 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { LoginHandler } from './LoginHandler.svelte';
+import { publicFetch } from '../utils';
 
-const mockFetch = vi.fn();
-globalThis.fetch = mockFetch;
+vi.mock('$lib/api/utils');
 
 describe('LoginHandler', () => {
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
 	describe('validateLoginData', () => {
 		it('should set error state and return null on invalid data', () => {
 			const loginHandler = new LoginHandler();
@@ -38,23 +42,13 @@ describe('LoginHandler', () => {
 	});
 
 	describe('loginUser', () => {
-		afterEach(() => {
-			mockFetch.mockRestore();
-		});
-
 		it('should set error response state message if response does not return back with ok status', async () => {
 			const loginHandler = new LoginHandler();
 			const mockStatus = 500;
-			const mockApiResponseMessage = 'Server is down :(';
-			const expectedErrorMessage = `Failed authentication request: Status code ${mockStatus}, with message: ${mockApiResponseMessage}`;
+			const expectedErrorMessage = `Request failed with status code ${mockStatus}`;
 
-			const mockResponse = {
-				ok: false,
-				status: mockStatus,
-				text: vi.fn().mockResolvedValueOnce(mockApiResponseMessage)
-			};
-
-			mockFetch.mockResolvedValueOnce(mockResponse);
+			const mockAxiosPostRequest = vi.mocked(publicFetch.post);
+			mockAxiosPostRequest.mockRejectedValueOnce(new Error(expectedErrorMessage));
 
 			await loginHandler.loginUser({
 				name: 'Daniel',

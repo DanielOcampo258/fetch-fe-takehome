@@ -4,9 +4,7 @@ import { DogMatchState } from '../state/DogMatchState.svelte';
 import DogMatch from '../DogMatch.svelte';
 import type { Dog } from '$lib/api/dogs/models';
 import { mockDogs } from '../../../testUtils';
-
-const mockFetch = vi.fn();
-globalThis.fetch = mockFetch;
+import { authenticatedFetch } from '$lib/api/utils';
 
 const newMockDog: Dog = {
 	id: '6',
@@ -17,26 +15,24 @@ const newMockDog: Dog = {
 	zip_code: '53188'
 };
 
-describe('dogMatch', () => {
+vi.mock('$lib/api/utils');
+
+describe('DogMatch', () => {
+	const mockAxiosPostRequest = vi.mocked(authenticatedFetch.post);
+
 	afterEach(() => {
-		mockFetch.mockReset();
+		vi.clearAllMocks();
 	});
 
 	it('should show an empty matches message when matches list is empty', async () => {
 		const dogMatchState = new DogMatchState();
 
-		const matchApiResponse = {
-			json: vi.fn().mockResolvedValueOnce({
-				match: newMockDog.id
-			})
-		};
+		const matchApiResponse = { data: { match: newMockDog.id } };
 
-		const fetchDogByIdResponse = {
-			json: vi.fn().mockResolvedValueOnce([newMockDog])
-		};
+		const fetchDogByIdResponse = { data: [newMockDog] };
 
-		mockFetch.mockResolvedValueOnce(matchApiResponse);
-		mockFetch.mockResolvedValueOnce(fetchDogByIdResponse);
+		mockAxiosPostRequest.mockResolvedValueOnce(matchApiResponse);
+		mockAxiosPostRequest.mockResolvedValueOnce(fetchDogByIdResponse);
 
 		render(DogMatch, { dogMatchState });
 
@@ -53,18 +49,12 @@ describe('dogMatch', () => {
 	it('should display dog card when valid data is received from match api', async () => {
 		const dogMatchState = new DogMatchState();
 
-		const matchApiResponse = {
-			json: vi.fn().mockResolvedValueOnce({
-				match: newMockDog.id
-			})
-		};
+		const matchApiResponse = { data: { match: newMockDog.id } };
 
-		const fetchDogByIdResponse = {
-			json: vi.fn().mockResolvedValueOnce([newMockDog])
-		};
+		const fetchDogByIdResponse = { data: [newMockDog] };
 
-		mockFetch.mockResolvedValueOnce(matchApiResponse);
-		mockFetch.mockResolvedValueOnce(fetchDogByIdResponse);
+		mockAxiosPostRequest.mockResolvedValueOnce(matchApiResponse);
+		mockAxiosPostRequest.mockResolvedValueOnce(fetchDogByIdResponse);
 
 		render(DogMatch, { dogMatchState });
 
@@ -79,18 +69,12 @@ describe('dogMatch', () => {
 	it('should remove dog from match list when remove dog match button is clicked', async () => {
 		const dogMatchState = new DogMatchState();
 
-		const matchApiResponse = {
-			json: vi.fn().mockResolvedValueOnce({
-				match: newMockDog.id
-			})
-		};
+		const matchApiResponse = { data: { match: newMockDog.id } };
 
-		const fetchDogByIdResponse = {
-			json: vi.fn().mockResolvedValueOnce([newMockDog])
-		};
+		const fetchDogByIdResponse = { data: [newMockDog] };
 
-		mockFetch.mockResolvedValueOnce(matchApiResponse);
-		mockFetch.mockResolvedValueOnce(fetchDogByIdResponse);
+		mockAxiosPostRequest.mockResolvedValueOnce(matchApiResponse);
+		mockAxiosPostRequest.mockResolvedValueOnce(fetchDogByIdResponse);
 
 		render(DogMatch, { dogMatchState });
 
