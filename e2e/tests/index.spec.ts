@@ -49,6 +49,7 @@ test.describe('Index Page', () => {
 		await expect(page.getByLabel('Sort Direction')).toBeVisible();
 
 		await expect(page.getByRole('button', { name: 'Find a match from favorites' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
 	});
 
 	test('should display all dog card elements on succesfull data fetch', async ({ page }) => {

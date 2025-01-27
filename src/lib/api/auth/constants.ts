@@ -1,3 +1,4 @@
 export enum AuthRoutes {
-	Login = 'auth/login'
+	Login = 'auth/login',
+	Logout = 'auth/logout'
 }
