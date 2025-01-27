@@ -10,7 +10,7 @@ export class DogSearchState {
 	totalDogs = $derived<number>(this.apiSearchResponse?.total ?? 0);
 
 	getDogsFromQuery = async (queryParams: DogSeachQuery) => {
-		if (!queryParams) return;
+		// if (!queryParams) return;
 		this.isLoading = true;
 
 		try {
