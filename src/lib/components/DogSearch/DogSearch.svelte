@@ -9,11 +9,9 @@
 	import DogCard from '../homePage/DogCard.svelte';
 	import { DogSearchState } from './state/DogSearchState.svelte';
 	import { untrack } from 'svelte';
-	import { FavoritesState } from './state/FavoritesState.svelte';
 
-	let { fetchDogMatch } = $props();
+	let { favoritesState, fetchDogMatch } = $props();
 
-	const favoritesState = new FavoritesState();
 	const filterState = new FilterState();
 	const dogSearchState = new DogSearchState();
 

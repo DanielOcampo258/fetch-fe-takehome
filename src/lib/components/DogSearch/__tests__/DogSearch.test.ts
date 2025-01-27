@@ -43,6 +43,7 @@ describe('DogSearch', () => {
 		const favoritesState = new FavoritesState();
 
 		render(DogSearch, {
+			favoritesState,
 			fetchDogMatch: matchState.fetchDogMatch
 		});
 
