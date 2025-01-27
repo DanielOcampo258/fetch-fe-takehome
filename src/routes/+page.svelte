@@ -21,8 +21,8 @@
 	});
 </script>
 
-<header class="flex flex-col items-center justify-center">
-	<div class="flex w-full items-center justify-between p-5">
+<header class="flex flex-col items-center justify-center p-5">
+	<div class="flex w-full items-center justify-between">
 		<h1 class="scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
 			Fetch Pet Finder
 		</h1>

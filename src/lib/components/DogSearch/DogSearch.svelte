@@ -32,7 +32,7 @@
 	});
 </script>
 
-<main>
+<main class="mb-5 bg-[#f1f0f2]">
 	<section class="flex flex-col items-center gap-5 p-12 md:flex-row md:items-start">
 		<aside class="top-10 flex flex-col gap-5 md:sticky md:max-w-xs">
 			<FilteringComponent {filterState} />
