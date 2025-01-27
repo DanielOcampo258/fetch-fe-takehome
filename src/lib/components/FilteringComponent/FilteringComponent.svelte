@@ -2,11 +2,11 @@
 	import { onMount } from 'svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
-	import SortingComponent from '../homePage/filtering/SortingComponent.svelte';
 	import type { FilterState } from './state/FilterQueryState.svelte';
 	import BreedSearchComboBox from '../BreedSearchComboBox/BreedSearchComboBox.svelte';
 	import { DogBreedsHandler } from '../BreedSearchComboBox/state/DogBreedState.svelte';
 	import { debounce } from '$lib/utils';
+	import SortingComponent from '../SortingComponent/SortingComponent.svelte';
 
 	const dogBreeds = new DogBreedsHandler();
 

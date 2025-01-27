@@ -1,9 +1,9 @@
 <script lang="ts">
 	import X from 'lucide-svelte/icons/x';
-	import DogCard from '../homePage/DogCard.svelte';
 	import { Button } from '../ui/button';
 	import type { Dog } from '$lib/api/dogs/models';
 	import type { DogMatchState } from './state/DogMatchState.svelte';
+	import DogCard from '../DogCard/DogCard.svelte';
 
 	let { dogMatchState }: { dogMatchState: DogMatchState } = $props();
 </script>

@@ -6,9 +6,9 @@
 	import FilteringComponent from '../FilteringComponent/FilteringComponent.svelte';
 	import { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
 	import DogPagination from '../DogPagination/DogPagination.svelte';
-	import DogCard from '../homePage/DogCard.svelte';
 	import { DogSearchState } from './state/DogSearchState.svelte';
 	import { untrack } from 'svelte';
+	import DogCard from '../DogCard/DogCard.svelte';
 
 	let { favoritesState, fetchDogMatch } = $props();
 
