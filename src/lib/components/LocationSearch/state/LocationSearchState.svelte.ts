@@ -4,6 +4,7 @@ import type {
 	LocationSearchRequest,
 	LocationSearchResponse
 } from '$lib/api/location/models';
+import { getLocationsFromApi } from '$lib/api/location/utils';
 import { authenticatedFetch } from '$lib/api/utils';
 import { calculateBoundingBox } from '../utils';
 
@@ -41,12 +42,7 @@ export class LocationSearchState implements LocationSearchStateType {
 		this.searchIsLoading = true;
 
 		try {
-			const res = await authenticatedFetch.post(
-				LocationRoutes.getLocationsSearch,
-				citySearchRequest
-			);
-
-			const data = res.data as LocationSearchResponse;
+			const data = await getLocationsFromApi(citySearchRequest);
 			this.searchResults = data.results;
 		} catch {
 			this.searchResults = [];
@@ -55,7 +51,7 @@ export class LocationSearchState implements LocationSearchStateType {
 		}
 	};
 
-	getLocations = async () => {
+	getLocationsWithinRadius = async () => {
 		if (!this.selectedLocation) return [];
 
 		const { bottom_left, top_right } = calculateBoundingBox(
@@ -74,12 +70,8 @@ export class LocationSearchState implements LocationSearchStateType {
 		};
 
 		try {
-			const res = await authenticatedFetch.post(
-				LocationRoutes.getLocationsSearch,
-				locationsSearchRequest
-			);
-
-			return res.data.results;
+			const data = await getLocationsFromApi(locationsSearchRequest);
+			return data.results;
 		} catch {
 			return [];
 		}
@@ -87,6 +79,7 @@ export class LocationSearchState implements LocationSearchStateType {
 
 	resetUserLocationState = () => {
 		this.cityInput = '';
+		this.searchResults = [];
 		this.selectedLocation = null;
 	};
 }

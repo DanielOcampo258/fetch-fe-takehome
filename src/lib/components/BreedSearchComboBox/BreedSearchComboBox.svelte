@@ -26,7 +26,7 @@
 </script>
 
 <article class="w-full text-center">
-	<Label for="combobox-trigger">Breeds</Label>
+	<Label for="dog-breed-combobox-trigger">Breeds</Label>
 
 	<Popover.Root bind:open>
 		<Popover.Trigger>

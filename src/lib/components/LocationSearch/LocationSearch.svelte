@@ -33,6 +33,7 @@
 		Location Filtering
 	</p>
 	<div class="flex gap-2">
+		<Label class="visually-hidden" for="state-filter">Filter by state</Label>
 		<Select.Root
 			type="single"
 			onValueChange={(value) => {
@@ -40,16 +41,19 @@
 				locationSearchState.resetUserLocationState();
 			}}
 		>
-			<Select.Trigger>{locationSearchState.stateInput || 'Any State'}</Select.Trigger>
+			<Select.Trigger id="state-filter"
+				>{locationSearchState.stateInput || 'Any State'}</Select.Trigger
+			>
 			<Select.Content side="right">
 				{#each stateArray as state}
-					<Select.Item value={state}>{state || 'Any State'}</Select.Item>
+					<Select.Item aria-label={state} value={state}>{state || 'Any State'}</Select.Item>
 				{/each}
 			</Select.Content>
 		</Select.Root>
 
 		<Popover.Root bind:open>
-			<Popover.Trigger bind:ref={triggerRef}>
+			<Label class="visually-hidden" for="city-filter">Filter by city</Label>
+			<Popover.Trigger bind:ref={triggerRef} id="city-filter">
 				{#snippet child({ props })}
 					<Button
 						variant="outline"
@@ -106,8 +110,8 @@
 		type="single"
 		onValueChange={(value) => (locationSearchState.radiusInput = Number(value) || 0)}
 	>
-		<Label class="text-center">Search Radius</Label>
-		<Select.Trigger disabled={locationSearchState.cityInput === ''}
+		<Label class="text-center" for="search-radius-filter">Search Radius</Label>
+		<Select.Trigger id="search-radius-filter" disabled={locationSearchState.cityInput === ''}
 			>{locationSearchState.radiusInput} miles</Select.Trigger
 		>
 		<Select.Content>

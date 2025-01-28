@@ -43,7 +43,10 @@ test.describe('Index Page', () => {
 		await expect(page.getByLabel('Minimum Age')).toBeVisible();
 		await expect(page.getByLabel('Maximum Age')).toBeVisible();
 
-		await expect(page.getByLabel('Zip codes')).toBeVisible();
+		await expect(page.getByText('Location Filtering')).toBeVisible();
+		await expect(page.getByLabel('Filter by city')).toBeVisible();
+		await expect(page.getByLabel('Filter by state')).toBeVisible();
+		await expect(page.getByLabel('Search Radius')).toBeVisible();
 
 		await expect(page.getByLabel('Sort Category')).toBeVisible();
 		await expect(page.getByLabel('Sort Direction')).toBeVisible();

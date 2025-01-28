@@ -14,16 +14,16 @@ describe('BreedSearchComboBox', () => {
 		const filterState = new FilterState();
 
 		render(BreedSearchComboBox, { allDogBreeds: mockBreeds, filterState });
-		const comboboxTrigger = screen.getByRole('combobox');
+		const comboboxTrigger = screen.getByLabelText('Breeds');
 
-		expect(comboboxTrigger.id).toBe('combobox-trigger');
+		expect(comboboxTrigger.id).toBe('dog-breed-combobox-trigger');
 	});
 
 	it("should show the text 'Any' on the button trigger when no breeds have been selected", () => {
 		const filterState = new FilterState();
 
 		render(BreedSearchComboBox, { allDogBreeds: mockBreeds, filterState });
-		const comboboxTrigger = screen.getByRole('combobox');
+		const comboboxTrigger = screen.getByLabelText('Breeds');
 
 		expect(comboboxTrigger.textContent).toBe('Any');
 	});
@@ -34,7 +34,7 @@ describe('BreedSearchComboBox', () => {
 		render(BreedSearchComboBox, { allDogBreeds: mockBreeds, filterState });
 
 		// Open combobox to see search bar
-		const comboboxTrigger = screen.getByRole('combobox');
+		const comboboxTrigger = screen.getByLabelText('Breeds');
 		await fireEvent.click(comboboxTrigger);
 
 		const searchInput = screen.getByTestId('breed-search-input');
@@ -52,7 +52,7 @@ describe('BreedSearchComboBox', () => {
 		render(BreedSearchComboBox, { allDogBreeds: mockBreeds, filterState });
 
 		// Trigger combobox to open
-		const comboboxTrigger = screen.getByRole('combobox');
+		const comboboxTrigger = screen.getByLabelText('Breeds');
 		await fireEvent.click(comboboxTrigger);
 
 		// Check Affenpinscher checkbox to add to state
@@ -69,7 +69,7 @@ describe('BreedSearchComboBox', () => {
 		render(BreedSearchComboBox, { allDogBreeds: mockBreeds, filterState });
 
 		// Trigger combobox to open
-		const comboboxTrigger = screen.getByRole('combobox');
+		const comboboxTrigger = screen.getByLabelText('Breeds');
 		await fireEvent.click(comboboxTrigger);
 
 		// Add two breeds

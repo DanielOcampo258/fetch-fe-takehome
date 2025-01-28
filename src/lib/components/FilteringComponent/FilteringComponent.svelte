@@ -33,7 +33,7 @@
 
 		// Once user has selected a location, then get first page of zip codes
 		if (locationSearchState.selectedLocation) {
-			locationSearchState.getLocations().then((data: LocationApiModel[]) => {
+			locationSearchState.getLocationsWithinRadius().then((data: LocationApiModel[]) => {
 				filterState.zipCodes = data.map((location) => location.zip_code);
 			});
 		} else {

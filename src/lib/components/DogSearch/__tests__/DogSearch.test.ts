@@ -8,6 +8,8 @@ import { FavoritesState } from '../state/FavoritesState.svelte';
 import { getDogIds, getDogsFromIds } from '$lib/api/dogs/utils.svelte';
 import userEvent from '@testing-library/user-event';
 import { MockPointerEvent } from './utils';
+import { getLocationsFromApi } from '$lib/api/location/utils';
+import { formatLocationToString } from '$lib/components/LocationSearch/utils';
 
 const mockScrollTo = vi.fn();
 
@@ -23,9 +25,17 @@ vi.mock('$lib/api/dogs/utils.svelte', async () => {
 	};
 });
 
+vi.mock('$lib/api/location/utils.ts');
+
 describe('DogSearch', () => {
 	beforeAll(() => {
 		Object.defineProperty(globalThis.window, 'scrollTo', { value: mockScrollTo });
+
+		// For helping mock shadcn ui select component functionality
+		window.PointerEvent = MockPointerEvent as any;
+		window.HTMLElement.prototype.scrollIntoView = vi.fn();
+		window.HTMLElement.prototype.hasPointerCapture = vi.fn();
+		window.HTMLElement.prototype.releasePointerCapture = vi.fn();
 		vi.useFakeTimers();
 	});
 
@@ -160,18 +170,50 @@ describe('DogSearch', () => {
 				});
 			});
 
-			it('should reset page state back to 1 when zipcode input changes', async () => {
+			it('should reset page state back to 1 when selected city changes', async () => {
 				const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+				const mockCity = {
+					zip_code: '2313',
+					latitude: 43.0,
+					longitude: -80.0,
+					city: 'Madison',
+					state: 'WI',
+					county: 'USA'
+				};
+
 				await runPageResetTest(async () => {
-					const zipCodeInput = screen.getByTestId('zip-codes');
-					await user.type(zipCodeInput, '31233');
+					vi.mocked(getLocationsFromApi).mockResolvedValueOnce({
+						results: [mockCity],
+						total: 1
+					});
+
+					const stateFilterSelect = screen.getByLabelText('Filter by state');
+					await fireEvent.pointerDown(
+						stateFilterSelect,
+						new MockPointerEvent('pointerdown', {
+							ctrlKey: false,
+							button: 0
+						})
+					);
+
+					//Get the most mid state in all the US
+					const wisconsin = screen.getByText('WI');
+					await user.click(wisconsin);
+
+					// Type into input
+					const cityInput = screen.getByLabelText('Filter by city');
+					await user.type(cityInput, 'Madison');
+
 					await vi.runAllTimersAsync();
+
+					const madisonCity = screen.getByText(formatLocationToString(mockCity));
+					await fireEvent.click(madisonCity);
 				});
 			});
 
 			it('should reset page state back to 1 when breeds input changes', async () => {
 				await runPageResetTest(async () => {
-					const comboboxTrigger = screen.getByRole('combobox');
+					const comboboxTrigger = screen.getByLabelText('Breeds');
 					await fireEvent.click(comboboxTrigger);
 
 					const affenpinscherCheckBox = screen.getByTestId(`${mockDogs[0].breed}-checkbox`);
@@ -181,19 +223,13 @@ describe('DogSearch', () => {
 		});
 
 		describe('dogs shown to user change based on filters', () => {
-			beforeAll(() => {
-				// For helping mock shadcn ui select component functionality
-				window.PointerEvent = MockPointerEvent as any;
-				window.HTMLElement.prototype.scrollIntoView = vi.fn();
-				window.HTMLElement.prototype.hasPointerCapture = vi.fn();
-				window.HTMLElement.prototype.releasePointerCapture = vi.fn();
-			});
+			beforeAll(() => {});
 
 			it('should call api to filter by breed', async () => {
 				renderComponent();
 
 				// Get combobox
-				const comboboxTrigger = screen.getByRole('combobox');
+				const comboboxTrigger = screen.getByLabelText('Breeds');
 				await fireEvent.click(comboboxTrigger);
 
 				// Click on breed filter
@@ -235,20 +271,49 @@ describe('DogSearch', () => {
 
 			it('should call api to filter by zip codes', async () => {
 				const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+				const mockCity = {
+					zip_code: '2313',
+					latitude: 43.0,
+					longitude: -80.0,
+					city: 'Madison',
+					state: 'WI',
+					county: 'USA'
+				};
+
+				vi.mocked(getLocationsFromApi).mockResolvedValue({
+					results: [mockCity],
+					total: 1
+				});
 				renderComponent();
 
-				const zipCodes = ['53188', '53713', '12345'];
-				const zipCodeString = zipCodes.join(', ');
+				const stateFilterSelect = screen.getByLabelText('Filter by state');
+				await fireEvent.pointerDown(
+					stateFilterSelect,
+					new MockPointerEvent('pointerdown', {
+						ctrlKey: false,
+						button: 0
+					})
+				);
 
-				// Get zip code input and fill it in
-				const zipCodeInput = screen.getByLabelText('Zip Codes');
-				await user.type(zipCodeInput, zipCodeString);
+				//Get the most mid state in all the US
+				const wisconsin = screen.getByText('WI');
+				await user.click(wisconsin);
+
+				// Type into input
+				const cityInput = screen.getByLabelText('Filter by city');
+				await user.type(cityInput, 'Madison');
+
+				await vi.runAllTimersAsync();
+
+				const madisonCity = screen.getByText(formatLocationToString(mockCity));
+				await fireEvent.click(madisonCity);
 
 				await vi.runAllTimersAsync();
 
 				expect(getDogIds).toHaveBeenCalledWith(
 					expect.objectContaining({
-						zipCodes
+						zipCodes: [mockCity.zip_code]
 					})
 				);
 			});

@@ -38,22 +38,4 @@ describe('FilteringComponent', () => {
 			expect(filterState.ageMax).toBe(48);
 		});
 	});
-
-	describe('Zip code filtering', () => {
-		it('should bind zip code input to state, and format the text properly', async () => {
-			const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-			const mockZipCodes = '98377, 12345, 76894';
-			const filterState = new FilterState();
-
-			render(FilteringComponent, { filterState });
-
-			const zipCodeInput = screen.getByTestId('zip-codes');
-			await user.type(zipCodeInput, mockZipCodes);
-
-			await vi.runAllTimersAsync();
-
-			expect(filterState.zipCodeInput).toBe(mockZipCodes);
-			expect(filterState.zipCodes).toStrictEqual(['98377', '12345', '76894']);
-		});
-	});
 });
