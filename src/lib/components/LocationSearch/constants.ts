@@ -7,5 +7,6 @@ export const INITIAL_LOCATION_SEARCH_FILTER: LocationSearchStateType = {
 	radiusInput: searchRadiusOptions[0],
 	searchResults: [],
 	selectedLocation: null,
-	from: 0
+	from: 0,
+	size: 250
 };

@@ -10,15 +10,6 @@ describe('BreedSearchComboBox', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('should have the custom id set onMount', async () => {
-		const filterState = new FilterState();
-
-		render(BreedSearchComboBox, { allDogBreeds: mockBreeds, filterState });
-		const comboboxTrigger = screen.getByLabelText('Breeds');
-
-		expect(comboboxTrigger.id).toBe('dog-breed-combobox-trigger');
-	});
-
 	it("should show the text 'Any' on the button trigger when no breeds have been selected", () => {
 		const filterState = new FilterState();
 

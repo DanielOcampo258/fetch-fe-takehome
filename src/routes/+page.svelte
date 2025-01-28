@@ -4,17 +4,16 @@
 	import DogSearch from '$lib/components/DogSearch/DogSearch.svelte';
 	import { FavoritesState } from '$lib/components/DogSearch/state/FavoritesState.svelte';
 	import Logout from '$lib/components/Logout/Logout.svelte';
-	import { Button } from '$lib/components/ui/button';
 	import * as Tabs from '$lib/components/ui/tabs';
 
-	// Keep favorites here to persist favorites between switchin between match and search view
+	// Keep favorites here to persist favorites when switching between match and search view
 	const favoritesState = new FavoritesState();
 	const dogMatchState = new DogMatchState();
 
 	let selectedTab = $state<'search' | 'match'>('search');
 
 	$effect(() => {
-		// Switch to matchmatchedDogsbs on new match
+		// Switch to matched dogs view on new match
 		if (dogMatchState.matchedDogs.length > 0) {
 			selectedTab = 'match';
 		}
@@ -28,7 +27,7 @@
 		</h1>
 		<Logout />
 	</div>
-	<Tabs.Root bind:value={selectedTab} class="">
+	<Tabs.Root bind:value={selectedTab}>
 		<Tabs.List>
 			<Tabs.Trigger value="search">Search</Tabs.Trigger>
 			<Tabs.Trigger value="match">View Matches</Tabs.Trigger>

@@ -11,6 +11,7 @@ export interface LocationSearchStateType {
 	radiusInput: number;
 	searchResults: LocationApiModel[];
 	from: number;
+	size: number;
 }
 
 export class LocationSearchState implements LocationSearchStateType {
@@ -20,6 +21,8 @@ export class LocationSearchState implements LocationSearchStateType {
 	searchResults: LocationApiModel[] = $state(INITIAL_LOCATION_SEARCH_FILTER.searchResults);
 	from = $state(INITIAL_LOCATION_SEARCH_FILTER.from);
 	selectedLocation = $state(INITIAL_LOCATION_SEARCH_FILTER.selectedLocation);
+
+	readonly size = INITIAL_LOCATION_SEARCH_FILTER.size;
 
 	searchIsLoading = $state(false);
 
@@ -57,7 +60,7 @@ export class LocationSearchState implements LocationSearchStateType {
 				bottom_left,
 				top_right
 			},
-			size: 100
+			size: this.size
 		};
 
 		try {
