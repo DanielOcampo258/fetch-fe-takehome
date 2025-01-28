@@ -8,7 +8,7 @@ export const INITIAL_EMPTY_FILTER: DogSeachQuery = {
 	breeds: [],
 	ageMin: null,
 	ageMax: null,
-	zipCodes: [''],
+	zipCodes: null,
 	size: 25,
 	from: 0,
 	sort: `${INITIAL_SORT_CATEGORY.toLowerCase()}:${INITIAL_SORT_DIRECTION.toLowerCase()}`

@@ -1,23 +1,50 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import type { FilterState } from './state/FilterQueryState.svelte';
 	import BreedSearchComboBox from '../BreedSearchComboBox/BreedSearchComboBox.svelte';
 	import { DogBreedsHandler } from '../BreedSearchComboBox/state/DogBreedState.svelte';
-	import { debounce } from '$lib/utils';
 	import SortingComponent from '../SortingComponent/SortingComponent.svelte';
+	import { LocationSearchState } from '../LocationSearch/state/LocationSearchState.svelte';
+	import LocationSearch from '../LocationSearch/LocationSearch.svelte';
+	import type { LocationApiModel } from '$lib/api/location/models';
+
+	let { filterState }: { filterState: FilterState } = $props();
 
 	const dogBreeds = new DogBreedsHandler();
+	const locationSearchState = new LocationSearchState();
 
 	onMount(() => {
 		dogBreeds.fetchAllDogBreeds();
 	});
 
-	let { filterState }: { filterState: FilterState } = $props();
+	$effect(() => {
+		// If filters change, reset to first page
+		if (
+			filterState.ageMin ||
+			filterState.ageMax ||
+			filterState.breeds.length ||
+			locationSearchState.selectedLocation ||
+			locationSearchState.radiusInput
+		) {
+			untrack(() => (filterState.currentPage = 1));
+		}
+
+		// Once user has selected a location, then get first page of zip codes
+		if (locationSearchState.selectedLocation) {
+			locationSearchState.getLocationsWithinRadius().then((data: LocationApiModel[]) => {
+				filterState.zipCodes = data.map((location) => location.zip_code);
+			});
+		} else {
+			// If selectedLocation was reset, we reflect that and show all the dogs again
+			filterState.zipCodes = null;
+		}
+	});
 </script>
 
 <section class="flex w-full flex-col items-center gap-5 lg:max-w-64">
+	<LocationSearch {locationSearchState} />
 	<BreedSearchComboBox allDogBreeds={dogBreeds.data} {filterState} />
 
 	<section class="w-full text-center">
@@ -48,19 +75,6 @@
 				placeholder="max"
 			/>
 		</div>
-	</section>
-
-	<section class="flex w-full flex-col items-center gap-2">
-		<Label for="zip-codes">Zip Codes</Label>
-		<Input
-			id="zip-codes"
-			data-testid="zip-codes"
-			onkeyup={debounce(
-				(e) => (filterState.zipCodeInput = (e.target as HTMLInputElement).value),
-				700
-			)}
-			placeholder="53713, 53188"
-		/>
 	</section>
 
 	<SortingComponent

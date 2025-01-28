@@ -8,9 +8,7 @@ export class FilterState implements DogSeachQuery {
 	breeds = $state(INITIAL_EMPTY_FILTER.breeds);
 	ageMin = $state(INITIAL_EMPTY_FILTER.ageMin);
 	ageMax = $state(INITIAL_EMPTY_FILTER.ageMax);
-
-	zipCodeInput = $state<string>(INITIAL_EMPTY_FILTER.zipCodes?.[0] ?? '');
-	zipCodes = $derived.by(() => (this.zipCodeInput ? this.zipCodeInput.split(', ') : null));
+	zipCodes = $state(INITIAL_EMPTY_FILTER.zipCodes);
 
 	currentPage = $state(1);
 	from = $derived((this.currentPage - 1) * this.size);

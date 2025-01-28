@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import * as Command from '$lib/components/ui/command/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -13,11 +13,6 @@
 	let searchRef = $state<HTMLInputElement>(null!);
 	let comboboxButton = $state<HTMLInputElement>(null!);
 
-	onMount(() => {
-		// Work around for accessibility as regular shadcn-ui buttons are given pre-existing ids
-		comboboxButton.id = 'combobox-trigger';
-	});
-
 	function refocusOnSearchBar() {
 		tick().then(() => {
 			searchRef.focus();
@@ -26,10 +21,10 @@
 </script>
 
 <article class="w-full text-center">
-	<Label for="combobox-trigger">Breeds</Label>
+	<Label for="dog-breed-combobox-trigger">Breeds</Label>
 
 	<Popover.Root bind:open>
-		<Popover.Trigger>
+		<Popover.Trigger id="dog-breed-combobox-trigger">
 			{#snippet child({ props })}
 				<Button
 					bind:ref={comboboxButton}
