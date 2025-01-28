@@ -7,7 +7,6 @@
 	import { FilterState } from '../FilteringComponent/state/FilterQueryState.svelte';
 	import DogPagination from '../DogPagination/DogPagination.svelte';
 	import { DogSearchState } from './state/DogSearchState.svelte';
-	import { untrack } from 'svelte';
 	import DogCard from '../DogCard/DogCard.svelte';
 	import LoadingSpinner from '../ui/LoadingSpinner/LoadingSpinner.svelte';
 
@@ -15,18 +14,6 @@
 
 	const filterState = new FilterState();
 	const dogSearchState = new DogSearchState();
-
-	$effect(() => {
-		// If filters change, reset to first page
-		if (
-			filterState.ageMin ||
-			filterState.ageMax ||
-			filterState.breeds.length ||
-			filterState.zipCodeInput
-		) {
-			untrack(() => (filterState.currentPage = 1));
-		}
-	});
 
 	$effect(() => {
 		dogSearchState.getDogsFromQuery(filterState.queryParams);

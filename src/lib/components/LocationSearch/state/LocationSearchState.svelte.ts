@@ -5,9 +5,9 @@ import type {
 	LocationSearchResponse
 } from '$lib/api/location/models';
 import { authenticatedFetch } from '$lib/api/utils';
+import { calculateBoundingBox } from '../utils';
 
 export interface LocationSearchStateType {
-	zipCodes: string[];
 	cityInput: string;
 	selectedLocation: LocationApiModel | null;
 	radiusInput: number;
@@ -21,18 +21,17 @@ export class LocationSearchState implements LocationSearchStateType {
 	searchResults: LocationApiModel[] = $state([]);
 	searchIsLoading = $state(false);
 	from = $state(0);
-	zipCodes = $state([]);
 	selectedLocation = $state<LocationApiModel | null>(null);
 
 	constructor() {
 		$effect(() => {
 			if (this.cityInput) {
-				this.fetchLocations();
+				this.searchForCities();
 			}
 		});
 	}
 
-	fetchLocations = async () => {
+	searchForCities = async () => {
 		const citySearchRequest: LocationSearchRequest = {
 			city: this.cityInput,
 			states: [this.stateInput],
@@ -54,5 +53,40 @@ export class LocationSearchState implements LocationSearchStateType {
 		} finally {
 			this.searchIsLoading = false;
 		}
+	};
+
+	getLocations = async () => {
+		if (!this.selectedLocation) return [];
+
+		const { bottom_left, top_right } = calculateBoundingBox(
+			this.selectedLocation.latitude,
+			this.selectedLocation.longitude,
+			this.radiusInput
+		);
+
+		const locationsSearchRequest: LocationSearchRequest = {
+			city: this.cityInput,
+			geoBoundingBox: {
+				bottom_left,
+				top_right
+			},
+			size: 100
+		};
+
+		try {
+			const res = await authenticatedFetch.post(
+				LocationRoutes.getLocationsSearch,
+				locationsSearchRequest
+			);
+
+			return res.data.results;
+		} catch {
+			return [];
+		}
+	};
+
+	resetUserLocationState = () => {
+		this.cityInput = '';
+		this.selectedLocation = null;
 	};
 }

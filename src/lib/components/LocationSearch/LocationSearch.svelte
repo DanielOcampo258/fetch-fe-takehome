@@ -33,7 +33,13 @@
 		Location Filtering
 	</p>
 	<div class="flex gap-2">
-		<Select.Root type="single" bind:value={locationSearchState.stateInput}>
+		<Select.Root
+			type="single"
+			onValueChange={(value) => {
+				locationSearchState.stateInput = value as USState;
+				locationSearchState.resetUserLocationState();
+			}}
+		>
 			<Select.Trigger>{locationSearchState.stateInput || 'Any State'}</Select.Trigger>
 			<Select.Content side="right">
 				{#each stateArray as state}
@@ -53,7 +59,7 @@
 						role="combobox"
 						aria-expanded={open}
 					>
-						{formatLocationToString(locationSearchState.selectedLocation) || 'Any city'}
+						{formatLocationToString(locationSearchState.selectedLocation) || 'Specific city'}
 					</Button>
 				{/snippet}
 			</Popover.Trigger>
