@@ -1,36 +1,27 @@
-import { LocationRoutes, USState } from '$lib/api/location/constants';
-import type {
-	LocationApiModel,
-	LocationSearchRequest,
-	LocationSearchResponse
-} from '$lib/api/location/models';
+import { USState } from '$lib/api/location/constants';
+import type { LocationApiModel, LocationSearchRequest } from '$lib/api/location/models';
 import { getLocationsFromApi } from '$lib/api/location/utils';
-import { authenticatedFetch } from '$lib/api/utils';
+import { INITIAL_LOCATION_SEARCH_FILTER } from '../constants';
 import { calculateBoundingBox } from '../utils';
 
 export interface LocationSearchStateType {
 	cityInput: string;
+	stateInput: USState;
 	selectedLocation: LocationApiModel | null;
 	radiusInput: number;
 	searchResults: LocationApiModel[];
+	from: number;
 }
 
 export class LocationSearchState implements LocationSearchStateType {
-	cityInput = $state('');
-	stateInput = $state<USState>(USState.EMPTY);
-	radiusInput = $state(5);
-	searchResults: LocationApiModel[] = $state([]);
-	searchIsLoading = $state(false);
-	from = $state(0);
-	selectedLocation = $state<LocationApiModel | null>(null);
+	cityInput = $state(INITIAL_LOCATION_SEARCH_FILTER.cityInput);
+	stateInput = $state(INITIAL_LOCATION_SEARCH_FILTER.stateInput);
+	radiusInput = $state(INITIAL_LOCATION_SEARCH_FILTER.radiusInput);
+	searchResults: LocationApiModel[] = $state(INITIAL_LOCATION_SEARCH_FILTER.searchResults);
+	from = $state(INITIAL_LOCATION_SEARCH_FILTER.from);
+	selectedLocation = $state(INITIAL_LOCATION_SEARCH_FILTER.selectedLocation);
 
-	constructor() {
-		$effect(() => {
-			if (this.cityInput) {
-				this.searchForCities();
-			}
-		});
-	}
+	searchIsLoading = $state(false);
 
 	searchForCities = async () => {
 		const citySearchRequest: LocationSearchRequest = {
@@ -81,5 +72,11 @@ export class LocationSearchState implements LocationSearchStateType {
 		this.cityInput = '';
 		this.searchResults = [];
 		this.selectedLocation = null;
+	};
+
+	updateCityInput = (newValue: string) => {
+		this.cityInput = newValue;
+		// Recall to look for cities based on new pinput
+		if (newValue) this.searchForCities();
 	};
 }

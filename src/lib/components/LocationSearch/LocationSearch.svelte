@@ -72,7 +72,7 @@
 				<Command.Root>
 					<Command.Input
 						onkeyup={debounce(
-							(e) => (locationSearchState.cityInput = (e.target as HTMLInputElement).value),
+							(e) => locationSearchState.updateCityInput((e.target as HTMLInputElement).value),
 							700
 						)}
 						placeholder="Search for a city..."
@@ -111,7 +111,7 @@
 		onValueChange={(value) => (locationSearchState.radiusInput = Number(value) || 0)}
 	>
 		<Label class="text-center" for="search-radius-filter">Search Radius</Label>
-		<Select.Trigger id="search-radius-filter" disabled={locationSearchState.cityInput === ''}
+		<Select.Trigger id="search-radius-filter" disabled={!locationSearchState.selectedLocation}
 			>{locationSearchState.radiusInput} miles</Select.Trigger
 		>
 		<Select.Content>
