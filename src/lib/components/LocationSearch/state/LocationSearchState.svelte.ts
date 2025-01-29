@@ -79,7 +79,7 @@ export class LocationSearchState implements LocationSearchStateType {
 
 	updateCityInput = (newValue: string) => {
 		this.cityInput = newValue;
-		// Recall to look for cities based on new pinput
+		// Re-call to look for cities based on new input
 		if (newValue) this.searchForCities();
 	};
 }
